@@ -1,0 +1,441 @@
+@prefixCls: ~"iform";
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+    font-size: 62.5% !important;
+
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.@{prefixCls} {
+
+    width: 100%;
+    height: 100%;
+
+    &-pannel {
+
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        position: relative;
+        outline: none;
+
+        &-bolder {
+            width: 100%;
+            height: 100%;
+            border-color: #aed0ea;
+            background: #f2f5f7;
+            color: #362b36;
+        }
+
+        &-header {
+            height: 60px;
+            color: white;
+            font-size: 2rem;
+            line-height: 60px;
+            background: #202731;
+            padding-left: 16px;
+            width: 100%;
+        }
+
+        &-main {
+            width: 100%;
+            height: calc(~"100% - 60px");
+            display: flex;
+            justify-content: space-between;
+
+            &-left {
+                height: 100%;
+                background: white;
+                width: 256px;
+                min-width: 256px;
+                border-right: 1px solid #E1E1E1;
+                overflow: hidden;
+                overflow-y: auto;
+            }
+
+            &-center {
+                width: 100%;
+                height: 100%;
+                flex-grow: 1;
+                overflow: hidden;
+
+                &-toolbar {
+                    width: 100%;
+                    height: 52px;
+                    background: white;
+                    border-bottom: 1px solid #E1E1E1;
+                    box-shadow: 0 0 10px #E1E1E1;
+                    line-height: 52px;
+                    color: black;
+                    font-size: 13px;
+                    cursor: pointer;
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    justify-content: center;
+
+                    &-l {
+
+                        align-self: flex-start;
+                        display: flex;
+                        justify-content: center;
+
+                        li {
+                            display: inline-block;
+                            list-style-type: none;
+                            padding: 0px 10px;
+                            height: 51px;
+                            cursor: pointer;
+
+                            &:hover {
+                                background: #F2F2F2;
+                               
+                            }
+                        }
+
+                    }
+
+
+                    &-c {
+
+                        align-self: center;
+                        display: flex;
+                        justify-content: center;
+
+                        li {
+                            display: inline-block;
+                            list-style-type: none;
+                            padding: 0px 10px;
+                            height: 51px;
+                            cursor: pointer;
+
+                            &:hover {
+                                background: #F2F2F2;
+                            }
+                        }
+
+                    }
+
+
+                    &-r {
+
+                        align-self: flex-end;
+                        display: flex;
+                        justify-content: center;
+
+                        li {
+                            display: inline-block;
+                            list-style-type: none;
+                            padding: 0px 10px;
+                            height: 51px;
+
+                            &:hover {
+                                background: #F2F2F2;
+                            }
+                        }
+
+                    }
+
+                }
+
+                &-content {
+                    width: 100%;
+                    height: 100%;
+                    padding: 10px;
+
+
+                    .iform-design {
+                        width: 100%;
+                        height: calc(~"100% - 53px");
+                        overflow: auto;
+                        position: relative;
+
+
+
+                        .iform-item {
+                            width: 100%;
+                            padding: 0 10px 10px;
+                            position: relative;
+                            background: white;
+                            margin-bottom: 8px;
+                            overflow: hidden;
+                            border-radius: 4px;
+                            cursor: move;
+                            border: 1px dashed transparent;
+                            box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .1);
+
+                            &::after {
+                                position: absolute;
+                                left: 0;
+                                right: 0;
+                                top: 0;
+                                bottom: 0;
+                                display: block;
+                                z-index: 8;
+                                content: "";
+                                height: 100% !important;
+                                visibility:visible !important;
+                            }
+
+                            &:hover {
+                                background: #e7f2fd;
+                                border: 1px dashed #409EFF;
+                            }
+
+                            .ivu-form-item-content {
+                                position: unset;
+                            }
+
+
+                            &-bottom-tools {
+                                position: absolute;
+                                right: 0;
+                                width: 56px;
+                                text-align: center;
+                                height: 26px;
+                                line-height: 26px;
+                                background: #409eff;
+                                z-index: 9;
+                                color: #fff;
+                                border-bottom-left-radius: 3px;
+                                top: 0px;
+
+
+
+                                i {
+                                    font-size: 2rem;
+                                    cursor: pointer;
+                                }
+                            }
+
+                        }
+
+
+                        .iform-item-move {
+                            background: #e7f2fd;
+                            margin-bottom: 8px;
+                            border-radius: 4px;
+                            content: '';
+                            font-size: 0px;
+                        }
+
+                        .iform-item-active {
+                            background: #e7f2fd;
+                            border: 1px dashed #409EFF;
+                        }
+
+                    }
+
+                    .iform-design-form {
+                        width: 100%;
+                        height: 100%;
+
+                       
+
+                    }
+
+                    .iform-layout-form {
+                        border: 1px dashed rgba(170, 170, 170, 0.7);
+                        min-height: 50px;
+                        background-color: white;
+                        padding: 10px;
+                    }
+
+                    .iform-design-drag {
+                        width: 100%;
+                        height: 100%;
+                    }
+                }
+
+            }
+
+            &-right {
+                height: 100%;
+                background: white;
+                width: 300px;
+                min-width: 300px;
+                border-left: 1px solid #E1E1E1;
+                overflow: hidden;
+                overflow-y: auto;
+
+
+                .ivu-tabs-bar {
+                    z-index: 999;
+                    position: fixed;
+                    top: 60px;
+                    background: white;
+                    width: 100%;
+                }
+
+                .ivu-tabs-tabpane {
+                    margin-top: 66px;
+                }
+
+                .ivu-tabs-nav .ivu-tabs-tab {
+                    padding: 16px 28px !important;
+                }
+
+                .ivu-form .ivu-form-item-label {
+                    font-size: 14px !important;
+                }
+
+                .ivu-form-item {
+                    margin-bottom: 12px !important;
+                }
+            }
+        }
+    }
+
+    &-tabs {
+        display: flex;
+        flex-direction: column;
+    }
+
+    &-card {
+
+        position: relative;
+        background-color: #fff;
+        margin-bottom: 6px;
+
+        &-header {
+            width: 100%;
+            position: relative;
+            height: 40px;
+            padding: 0px 10px 0px 10px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+
+            &-title {
+                flex-grow: 1;
+                margin-left: 10px;
+                font-size: 1.5rem;
+                color: black;
+                line-height: 21px;
+                font-weight: bold;
+            }
+
+            &::after {
+                content: '';
+                position: absolute;
+                width: 3px;
+                width: 3px;
+                background: linear-gradient(180deg, #25b6ff, #107fff);
+                border-radius: 3px;
+                height: 14px;
+                top: 12px;
+                margin-right: 0px;
+            }
+
+
+        }
+
+        &-content {
+            position: relative;
+
+            &-draggable-coms {
+                margin-left: 10px;
+            }
+
+            &-draggable-com {
+
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                margin: 0px 6px 8px 0px;
+                color: #333;
+                width: 46%;
+                display: inline-block;
+                background: #f4f6fc;
+                color: #333333;
+                font-size: 1.3rem;
+                cursor: move;
+                padding: 6px;
+                border: 1px dashed #E0E0E0;
+
+
+                a {
+                    cursor: move;
+                    width: 100%;
+                    height: 100%;
+                    color: #333;
+                    display: inline-block;
+
+                }
+
+                &:hover {
+                    color: #409eff;
+                    border: 1px dashed #409eff;
+                    background: #e7f2fd;
+
+                    a {
+                        color: #409eff;
+                    }
+
+                }
+
+            }
+
+        }
+
+    }
+
+    &-no-data {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        display: flex;
+        flex-direction: column;
+        color: #CFCCCC;
+        text-align: center;
+        margin-left: -100px;
+        margin-top: -104px;
+
+        i {
+            font-size: 60px;
+        }
+
+        span {
+            font-size: 20px;
+        }
+    }
+
+
+    .ivu-form-item-label {
+        color: black;
+    }
+
+    ::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+.padding-10px {
+    padding: 10px;
+}
+
+.padding-left-10px {
+    padding-left: 10px;
+}
+
+.padding-right-10px {
+    padding-right: 10px;
+}
+
+.padding-top-10px {
+    padding-top: 10px;
+}
+
+.padding-bottom-10px {
+    padding-bottom: 10px;
+}
+
+.margin-top-plus-16px {
+    margin-top: -16px;
+}
