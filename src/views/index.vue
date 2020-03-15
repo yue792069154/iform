@@ -1,58 +1,270 @@
-<style scoped>
-    .index {
-        width: 100%;
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        text-align: center;
-    }
 
-    .index h1 {
-        height: 150px;
-    }
-
-    .index h1 img {
-        height: 100%;
-    }
-
-    .index h2 {
-        color: #666;
-        margin-bottom: 200px;
-    }
-
-    .index h2 p {
-        margin: 0 0 50px;
-    }
-
-    .index .ivu-row-flex {
-        height: 100%;
-    }
+<style lang="less">
+@import "../styles/index.less";
 </style>
+
 <template>
-    <div class="index">
-        <Row type="flex" justify="center" align="middle">
-            <Col span="24">
-                <h1>
-                    <img src="https://raw.githubusercontent.com/iview/iview/master/assets/logo.png">
-                </h1>
-                <h2>
-                    <p>Welcome to your iView app!</p>
-                    <Button type="ghost" @click="handleStart">Start iView</Button>
-                </h2>
-            </Col>
-        </Row>
+    <div :class="[prefixCls]">
+        <div :class="[prefixCls + '-pannel']">
+            <div :class="[prefixCls + '-pannel-bolder']">
+                <div :class="[prefixCls + '-pannel-header']">
+                    <i class="fa fa-file-text"></i> iForm
+                </div>
+                <div :class="[prefixCls + '-pannel-main']">
+                    <div :class="[prefixCls + '-pannel-main-left']">
+                        <div :class="[prefixCls + '-card']" v-for="componentGroup in componentGroupList">
+                            <div :class="[prefixCls + '-card-header']">
+                                <div :class="[prefixCls + '-card-header-title']" v-text="componentGroup.label">
+    
+                                </div>
+                            </div>
+                            <div :class="[prefixCls + '-card-content']">
+                                <ul :class="[prefixCls + '-card-content-draggable-coms']">
+                                    <draggable v-model="comsList" :options="draggableOptions">
+                                        <li :class="[prefixCls + '-card-content-draggable-com']" v-for="component in componentGroup.componentList" :type="component.type" :groupType="componentGroup.groupType">
+                                            <i :class="component.icon"></i>
+                                            <a v-text="component.label"></a>
+                                        </li>
+                                    </draggable>
+                                </ul>
+                            </div>
+                        </div>
+    
+                    </div>
+                    <div :class="[prefixCls + '-pannel-main-center']">
+                        <div :class="[prefixCls + '-pannel-main-center-toolbar']">
+                            <div :class="[prefixCls + '-pannel-main-center-toolbar-l']">
+                                <ul>
+    
+                                    <li>
+    
+                                        <span>导入</span>
+    
+                                    </li>
+                                    <li>
+    
+                                        <span @click="onExport">导出</span>
+    
+                                    </li>
+    
+                                </ul>
+                            </div>
+                            <div :class="[prefixCls + '-pannel-main-center-toolbar-c']">
+                                <ul>
+    
+                                    <li>
+    
+                                        <span>手机</span>
+    
+                                    </li>
+                                    <li>
+    
+                                        <span>平板</span>
+    
+                                    </li>
+                                    <li>
+    
+                                        <span>电脑</span>
+    
+                                    </li>
+                                </ul>
+                            </div>
+                            <div :class="[prefixCls + '-pannel-main-center-toolbar-r']">
+                                <ul>
+                                    <li>
+                                        运行
+                                    </li>
+                                    <li @click="onPreview()">
+                                        视图
+                                    </li>
+                                    <li @click="onPreview()">
+                                        预览
+                                    </li>
+                                    <li @click="onPreview()">
+                                        HTML
+                                    </li>
+                                    <li @click="onPreview()">
+                                        javaScript
+                                    </li>
+                                    <li @click="onClear()">
+                                        清空
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div :class="[prefixCls + '-pannel-main-center-content']">
+                            <div :class="[prefixCls + '-design']">
+                        
+                                <div :class="[prefixCls + '-no-data']" v-if="comSelect.comList<=0">
+                                    <i class="icon iconfont iconnoData"></i>
+                                    <span>从左侧拖拽来添加字段</span>
+                                </div>
+                                <ivu-core v-show="!comPreview" :comSelect="comSelect" @getComAttribute="getComAttributeGroupList"></ivu-core>
+                            </div>
+                        </div>
+                    </div>
+                    <div :class="[prefixCls + '-pannel-main-right']">
+                        <Tabs :value="comTabsValue" @on-click="onComTabsClick">
+                            <TabPane label="组件属性" icon="md-hammer" name="comAttribute">
+                                <div :class="[prefixCls + '-card margin-top-plus-16px']" v-for="group in comAttributeGroupList">
+                                    <div :class="[prefixCls + '-card-header']">
+                                        <div :class="[prefixCls + '-card-header-title']" v-text="group.groupName">
+                                        </div>
+                                    </div>
+                                    <div :class="[prefixCls + '-card-content padding-left-10px padding-right-10px padding-bottom-10px']">
+                                        <com-attribute :comAttribute="group.children">
+                                        </com-attribute>
+                                    </div>
+                                </div>
+    
+                            </TabPane>
+                            <TabPane label="表单属性" icon="ios-paper" name="formAttribute">
+                                <div :class="[prefixCls + '-card margin-top-plus-16px']" v-for="group in formAttributeGroupList  ">
+                                    <div :class="[prefixCls + '-card-header']">
+                                        <div :class="[prefixCls + '-card-header-title']" v-text="group.groupName">
+                                        </div>
+                                    </div>
+                                    <div :class="[prefixCls + '-card-content padding-left-10px padding-right-10px padding-bottom-10px']">
+                                        <com-attribute :comAttribute="group.children">
+                                        </com-attribute>
+                                    </div>
+                                </div>
+                            </TabPane>
+                        </Tabs>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
+
 <script>
-    export default {
-        methods: {
-            handleStart() {
-                this.$Modal.info({
-                    title: 'Bravo',
-                    content: 'Now, enjoy the convenience of iView.'
-                });
+
+import draggable from "vuedraggable";
+import _ from "lodash";
+
+import components from "../components/index";
+
+const prefixCls = 'iform';
+
+export default {
+    data: function() {
+        return {
+
+            ui: "iview",
+            prefixCls: prefixCls,
+
+            draggableOptions: {
+                group: {
+                    name: 'psp-form',
+                    pull: 'clone',
+                    put: false
+                },
+                ghostClass: prefixCls + "-item-move",
+                animation: 150,
+                sort: false
+            },
+
+
+            componentGroupList: [],
+
+            comsList: [],
+
+
+            comAttributeGroupList: [],
+
+
+            comSelect: {
+                formProps: {
+
+                },
+                comList: []
+            },
+
+            formAttributeGroupList: [],
+
+            comPreview: false,
+            comTabsValue: 'comAttribute',
+
+            comToolbar: {
+
             }
+        };
+    },
+    created() {
+
+        this.getComponents();
+        //this.getFormAttributeGroupList();
+
+    },
+    mounted() {
+ 
+    },
+    methods: {
+
+        getComponents() {
+
+            let vm = this;
+
+            _.mapKeys(components[this.ui], (value, key) => {
+
+                var componentGroup = {
+                    label: vm.$t(key),
+                    groupType: key,
+                    componentList: []
+                };
+
+
+                _.forEach(value, function(Component) {
+                    componentGroup.componentList.push(new Component(vm));
+                });
+
+                vm.componentGroupList.push(componentGroup);
+
+            });
+
+        },
+        getFormAttributeGroupList() {
+
+            var ivuForm = new IvuForm();
+            this.comSelect.formProps = ivuForm.props;
+
+            this.formAttributeGroupList = ivuForm.groupList;
+
+        },
+        getComAttributeGroupList(comAttributeGroupList) {
+
+            this.comTabsValue = 'comAttribute';
+            this.comAttributeGroupList = comAttributeGroupList;
+
+        },
+        onComTabsClick(name) {
+            this.comTabsValue = name;
+        },
+        onClear() {
+
+            this.comSelect = {
+                formProps: {
+
+                },
+                comList: []
+            };
+
+            this.comPreview = false;
+            this.comAttributeGroupList = [];
+        },
+        onPreview() {
+            this.comPreview = !this.comPreview;
+        },
+        onExport() {
+
+            this.comPreview = !this.comPreview;
+
         }
-    };
+
+    },
+    components: {
+        draggable
+    }
+};
 </script>

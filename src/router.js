@@ -1,8 +1,12 @@
+import IFormDesign from './views/iform-design.vue';
+
 const routers = [{
-    path: '/',
-    meta: {
-        title: ''
-    },
-    component: (resolve) => require(['./views/index.vue'], resolve)
-}];
+        path: '/',
+        meta: {
+            title: 'iForm'
+        },
+        component: IFormDesign
+    }
+];
+
 export default routers;
