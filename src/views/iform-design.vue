@@ -1,5 +1,4 @@
 <script>
-
 const prefixCls = 'iform';
 
 import draggable from "vuedraggable";
@@ -19,7 +18,7 @@ export default {
     },
     data() {
         return {
-            
+
             ui: "iview",
 
             prefixCls: prefixCls,
@@ -49,7 +48,7 @@ export default {
         }, [
             h("draggable", {
                 props: {
-                    options: { 
+                    options: {
                         group: {
                             name: 'iform'
                         },
@@ -59,37 +58,37 @@ export default {
                 },
                 class: `${prefixCls}-design-form`,
                 on: {
-                    add: function (e) {
+                    add: function(e) {
 
                         var groupType = e.item.attributes.groupType.value;
                         var type = e.item.attributes.type.value;
 
-                        _.forEach(vm.componentSelect.componentList, function (item) {
+                        _.forEach(vm.componentSelect.componentList, function(item) {
                             item.active = false;
                         });
 
                         var component = new components[vm.ui][groupType][type](vm);
 
-                        component.onGetComAttributeGroupList = function (groupList) {
-                            vm.$emit('getComAttribute', groupList);
-                        };
-
-                        component.onGetComAttributeGroupList(component.groupList);
-
                         vm.componentSelect.componentList.splice(e.newIndex, 0, component);
 
 
+                        vm.$store.commit({
+                            type: "setComponentAttributeGroupList",
+                            componentAttributeGroupList: component.groupList
+                        });
+
                     },
-                    update: function (e) {
- 
+                    update: function(e) {
+
                         var component = vm.componentSelect.componentList[e.oldIndex];
                         vm.componentSelect.componentList.splice(e.oldIndex, 1);
                         vm.componentSelect.componentList.splice(e.newIndex, 0, component);
 
                         console.log(vm.componentSelect.componentList);
+
                     }
                 }
-            }, [vm.componentSelect.componentList.map(function (component) {
+            }, [vm.componentSelect.componentList.map(function(component) {
                 if (component.layout) {
                     return renderUtils.renderLayoutItem(h, component, vm.componentSelect);
                 } else {
@@ -103,5 +102,4 @@ export default {
         draggable
     }
 }
-
 </script>

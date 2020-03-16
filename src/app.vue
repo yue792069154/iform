@@ -100,7 +100,8 @@
                     <div :class="[prefixCls + '-pannel-main-right']">
                         <Tabs :value="comTabsValue" @on-click="onComTabsClick">
                             <TabPane label="组件属性" icon="md-hammer" name="comAttribute">
-                                <div :class="[prefixCls + '-card margin-top-plus-16px']" v-for="group in comAttributeGroupList">
+    
+                                <div :class="[prefixCls + '-card margin-top-plus-16px']" v-for="group in componentAttributeGroupList">
                                     <div :class="[prefixCls + '-card-header']">
                                         <div :class="[prefixCls + '-card-header-title']" v-text="group.groupName">
                                         </div>
@@ -137,6 +138,7 @@ import draggable from "vuedraggable";
 import _ from "lodash";
 
 import components from "./components/index";
+import { mapMutations, mapState } from 'vuex'
 
 const prefixCls = 'iform';
 
@@ -180,6 +182,11 @@ export default {
             }
         };
     },
+    computed: {
+        componentAttributeGroupList() {
+            return this.$store.state.componentAttributeGroupList
+        }
+    },
     created() {
 
         this.getComponents();
@@ -222,6 +229,7 @@ export default {
 
         },
         getComAttributeGroupList(comAttributeGroupList) {
+
 
             this.comTabsValue = 'comAttribute';
             this.comAttributeGroupList = comAttributeGroupList;

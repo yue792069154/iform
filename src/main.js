@@ -58,13 +58,15 @@ router.afterEach(() => {
 
 const store = new Vuex.Store({
     state: {
-
+        componentAttributeGroupList: []
     },
     getters: {
 
     },
     mutations: {
-
+        setComponentAttributeGroupList(state, data) {
+            state.componentAttributeGroupList = data.componentAttributeGroupList;
+        }
     },
     actions: {
 

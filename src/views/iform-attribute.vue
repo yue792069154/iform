@@ -22,6 +22,7 @@ export default {
     },
     render(h) {
 
+
         var comAttributeList = [];
 
         lodash.mapKeys(this.comAttribute, (property, propertyName) => {
