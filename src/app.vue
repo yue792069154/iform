@@ -93,7 +93,7 @@
                         </div>
                         <div :class="[prefixCls + '-pannel-main-center-content']">
                             <div :class="[prefixCls + '-design']">
-                                <router-view></router-view>
+                                 <router-view></router-view>
                             </div>
                         </div>
                     </div>
@@ -107,8 +107,7 @@
                                         </div>
                                     </div>
                                     <div :class="[prefixCls + '-card-content padding-left-10px padding-right-10px padding-bottom-10px']">
-                                        <com-attribute :comAttribute="group.children">
-                                        </com-attribute>
+                                        <i-form-attribute :componentAttribute="group.children"></i-form-attribute>
                                     </div>
                                 </div>
     
@@ -134,11 +133,12 @@
 </template>
 
 <script>
+
 import draggable from "vuedraggable";
 import _ from "lodash";
 
 import components from "./components/index";
-import { mapMutations, mapState } from 'vuex'
+import IFormAttribute from './views/iform-attribute.vue';
 
 const prefixCls = 'iform';
 
@@ -261,7 +261,8 @@ export default {
 
     },
     components: {
-        draggable
+        draggable,
+        IFormAttribute
     }
 };
 </script>

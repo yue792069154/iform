@@ -1,16 +1,14 @@
-<template>
-</template>
-
 <script>
 
 import draggable from "vuedraggable";
-import renderUtils from "../libs/render";
 import _ from "lodash";
+
+import renderUtils from "../libs/render";
 
 export default {
     name: 'IFormAttribute',
     props: {
-        comAttribute: {
+        componentAttribute: {
             type: Object,
             default () {
                 return {};
@@ -22,13 +20,14 @@ export default {
     },
     render(h) {
 
+        var vm=this;
 
         var comAttributeList = [];
 
-        lodash.mapKeys(this.comAttribute, (property, propertyName) => {
+        _.mapKeys(this.componentAttribute, (property, propertyName) => {
             comAttributeList.push(h("FormItem", {
                 props: {
-                    label: property.label == false ? "" : lang[propertyName]
+                    label: property.label == false ? "" : vm.$t([propertyName])
                 },
                 style: {
                     display: property.display
