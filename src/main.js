@@ -15,6 +15,9 @@ import enLocale from 'iview/src/locale/lang/en-US';
 import VueCodeMirror from 'vue-codemirror';
 import 'codemirror/lib/codemirror.css';
 
+import JSONView from 'vue-json-viewer';
+Vue.use(JSONView);
+
 
 Vue.use(VueRouter);
 Vue.use(Vuex);
@@ -58,14 +61,25 @@ router.afterEach(() => {
 
 const store = new Vuex.Store({
     state: {
-        componentAttributeGroupList: []
+        componentSelect: {
+            formProps: {
+
+            },
+            componentList: [
+
+            ]
+        },
+        componentActive: {}
     },
     getters: {
 
     },
     mutations: {
-        setComponentAttributeGroupList(state, data) {
-            state.componentAttributeGroupList = data.componentAttributeGroupList;
+        setComponentActive(state, data) {
+            state.componentActive = data.componentActive;
+        },
+        setComponentSelect(state, data) {
+            state.componentSelect = data.componentSelect;
         }
     },
     actions: {

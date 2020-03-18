@@ -8,14 +8,6 @@ import renderUtils from "../libs/render";
 
 export default {
     name: 'IFormDesign',
-    props: {
-        componentList1: {
-            type: Array,
-            default () {
-                return [];
-            }
-        }
-    },
     data() {
         return {
 
@@ -32,8 +24,13 @@ export default {
 
         }
     },
+    created() {
+         this.componentSelect = this.$store.state.componentSelect;
+    },
+
     render(h) {
 
+       
         var vm = this;
 
         return h("Form", {
@@ -73,8 +70,13 @@ export default {
 
 
                         vm.$store.commit({
-                            type: "setComponentAttributeGroupList",
-                            componentAttributeGroupList: component.groupList
+                            type: "setComponentActive",
+                            componentActive: component
+                        });
+
+                        vm.$store.commit({
+                            type: "setComponentSelect",
+                            componentSelect: vm.componentSelect
                         });
 
                     },
@@ -84,8 +86,18 @@ export default {
                         vm.componentSelect.componentList.splice(e.oldIndex, 1);
                         vm.componentSelect.componentList.splice(e.newIndex, 0, component);
 
-                        console.log(vm.componentSelect.componentList);
+                        vm.$store.commit({
+                            type: "setComponentSelect",
+                            componentSelect: vm.componentSelect
+                        });
 
+                    },
+                    choose: function(e) {
+                        var component = vm.componentSelect.componentList[e.oldIndex];
+                        vm.$store.commit({
+                            type: "setComponentAttributeGroupList",
+                            componentAttributeGroupList: component.groupList
+                        });
                     }
                 }
             }, [vm.componentSelect.componentList.map(function(component) {

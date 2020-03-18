@@ -1,32 +1,23 @@
-var VuePage = require("../../../common/basePage/vuePage.js");
-var iview = require("comjs:iview");
-require("comjs:iconfont");
-const lang = require('../lang/index.js');
-const object = require('./object.js');
-require('../components/index.js');
-
-var fw = VuePage.fw;
-var OpenTypeEnum = fw.core.protocol.OpenTypeEnum;
-
-var lodash = fw.core.Utils.lodash;
+ 
+import _ from "lodash";
 
 const size = "large";
 
 
 const handelEvent = function (property, value) {
-    if (lodash.isFunction(property.onChange)) {
+    if (_.isFunction(property.onChange)) {
         property.onChange(value);
     }
 };
 
 const handelAddEvent = function (property) {
-    if (lodash.isFunction(property.onAdd)) {
+    if (_.isFunction(property.onAdd)) {
         property.onAdd();
     }
 };
 
 const handelClickEvent = function (property) {
-    if (lodash.isFunction(property.onClick)) {
+    if (_.isFunction(property.onClick)) {
         property.onClick();
     }
 };
@@ -93,7 +84,7 @@ export default  {
         switch (property.render) {
             case "RadioGroup":
 
-                lodash.mapKeys(property.optionList, (item) => {
+                _.mapKeys(property.optionList, (item) => {
                     optionList.push(h("Radio", {
                         props: {
                             label: item.value
@@ -109,7 +100,7 @@ export default  {
                     },
                     on: {
                         "on-change": (value) => {
-                            var option = lodash.find(property.optionList, function (option) {
+                            var option = _.find(property.optionList, function (option) {
                                 return option.value == value;
                             });
                             handelEvent(property, option);
@@ -225,7 +216,7 @@ export default  {
                     })]);
                 };
 
-                lodash.mapKeys(property.optionList, (option, index) => {
+                _.mapKeys(property.optionList, (option, index) => {
                     optionList.push(h("Row", {
                         props: {
 
@@ -284,7 +275,7 @@ export default  {
 
             default:
 
-                lodash.mapKeys(property.optionList, (option) => {
+                _.mapKeys(property.optionList, (option) => {
                     optionList.push(h("Option", {
                         props: {
                             value: option.value,
@@ -309,7 +300,7 @@ export default  {
                     },
                     on: {
                         "on-change": (value) => {
-                            var option = lodash.find(property.optionList, function (option) {
+                            var option = _.find(property.optionList, function (option) {
                                 return option.value == value;
                             });
                             handelEvent(property, option);

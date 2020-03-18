@@ -32,22 +32,6 @@
                     </div>
                     <div :class="[prefixCls + '-pannel-main-center']">
                         <div :class="[prefixCls + '-pannel-main-center-toolbar']">
-                            <div :class="[prefixCls + '-pannel-main-center-toolbar-l']">
-                                <ul>
-    
-                                    <li>
-    
-                                        <span>导入</span>
-    
-                                    </li>
-                                    <li>
-    
-                                        <span @click="onExport">导出</span>
-    
-                                    </li>
-    
-                                </ul>
-                            </div>
                             <div :class="[prefixCls + '-pannel-main-center-toolbar-c']">
                                 <ul>
     
@@ -73,8 +57,10 @@
                                     <li>
                                         运行
                                     </li>
-                                    <li @click="onPreview()">
-                                        视图
+                                    <li>
+                                        <router-link to="/">
+                                            设计
+                                        </router-link>
                                     </li>
                                     <li @click="onPreview()">
                                         预览
@@ -85,6 +71,12 @@
                                     <li @click="onPreview()">
                                         javaScript
                                     </li>
+                                     <li>
+                                        <router-link to="code">
+                                            数据
+                                        </router-link>
+                                    </li>
+                                    
                                     <li @click="onClear()">
                                         清空
                                     </li>
@@ -101,13 +93,13 @@
                         <Tabs :value="comTabsValue" @on-click="onComTabsClick">
                             <TabPane label="组件属性" icon="md-hammer" name="comAttribute">
     
-                                <div :class="[prefixCls + '-card margin-top-plus-16px']" v-for="group in componentAttributeGroupList">
+                                <div :class="[prefixCls + '-card margin-top-plus-16px']" v-for="group in componentActive.groupList">
                                     <div :class="[prefixCls + '-card-header']">
                                         <div :class="[prefixCls + '-card-header-title']" v-text="group.groupName">
                                         </div>
                                     </div>
                                     <div :class="[prefixCls + '-card-content padding-left-10px padding-right-10px padding-bottom-10px']">
-                                        <i-form-attribute :componentAttribute="group.children"></i-form-attribute>
+                                        <i-form-attribute :component="componentActive" :comAttribute="group.children"></i-form-attribute>
                                     </div>
                                 </div>
     
@@ -183,8 +175,8 @@ export default {
         };
     },
     computed: {
-        componentAttributeGroupList() {
-            return this.$store.state.componentAttributeGroupList
+        componentActive() {
+            return this.$store.state.componentActive
         }
     },
     created() {

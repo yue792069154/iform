@@ -59,14 +59,12 @@ class IvuText extends Ivu {
             children: {
                 code: {
                     type: String,
-                    props: props,
                     onChange: function (value) {
                         props.code = value;
                     }
                 },
                 label: {
                     type: String,
-                    props: props,
                     onChange: function (value) {
                         self.label = value;
                         props.label = value;
@@ -74,14 +72,12 @@ class IvuText extends Ivu {
                 },
                 width: {
                     type: Number,
-                    props: props,
                     onChange: function (value) {
                         props.width = value;
                     }
                 },
                 size: {
                     type: Array,
-                    props: props,
                     optionList: [{
                         label: Vue.$t('large'),
                         value: "large"
@@ -98,7 +94,6 @@ class IvuText extends Ivu {
                 },
                 placeholder: {
                     type: String,
-                    props: props,
                     clearable: true,
                     onChange: function (value) {
                         props.placeholder = value;
@@ -106,7 +101,6 @@ class IvuText extends Ivu {
                 },
                 defaultValue: {
                     type: String,
-                    props: props,
                     clearable: true,
                     onChange: function (value) {
                         props.value = value;
@@ -114,21 +108,18 @@ class IvuText extends Ivu {
                 },
                 clearable: {
                     type: Boolean,
-                    props: props,
                     onChange: function (value) {
                         props.clearable = value;
                     }
                 },
                 disabled: {
                     type: Boolean,
-                    props: props,
                     onChange: function (value) {
                         props.disabled = value;
                     }
                 },
                 readonly: {
                     type: Boolean,
-                    props: props,
                     onChange: function (value) {
                         props.readonly = value;
                     }
@@ -140,21 +131,18 @@ class IvuText extends Ivu {
             children: {
                 required: {
                     type: Boolean,
-                    props: props,
                     onChange: function (value) {
                         props.required = value;
                     }
                 },
                 maxlength: {
                     type: Number,
-                    props: props,
                     onChange: function (value) {
                         props.maxlength = value;
                     }
                 },
                 regexType: {
                     type: Array,
-                    props: props,
                     render: "RadioGroup",
                     optionList: [{
                         label: Vue.$t('regexBuilit'),
@@ -191,7 +179,6 @@ class IvuText extends Ivu {
                 },
                 regexBuilit: {
                     type: Array,
-                    props: props,
                     label: false,
                     clearable: true,
                     optionList: regexList,
@@ -205,7 +192,6 @@ class IvuText extends Ivu {
                 },
                 regexCustom: {
                     type: String,
-                    props: props,
                     label: false,
                     display: "none",
                     clearable: true,
@@ -217,7 +203,6 @@ class IvuText extends Ivu {
                 regexMessage: {
                     type: String,
                     textarea: true,
-                    props: props,
                     clearable: true,
                     onChange: function (value) {
                         props.regexMessage = value;
