@@ -13,7 +13,7 @@ export default {
                 return {};
             }
         },
-        comAttribute: {
+        componentAttribute: {
             type: Object,
             default () {
                 return {};
@@ -27,20 +27,20 @@ export default {
 
         var vm = this;
 
-        var comAttributeList = [];
+        var componentAttributeList = [];
 
-        _.mapKeys(this.comAttribute, (property, propertyKey) => {
-            property.props = vm.component.props;
-            comAttributeList.push(h("FormItem", {
+
+        _.mapKeys(this.componentAttribute, (propertyProps, propertyKey) => {
+            componentAttributeList.push(h("FormItem", {
                 props: {
-                    label: property.label == false ? "" : vm.$t([propertyKey])
+                    label: propertyProps.label == false ? "" : vm.$t([propertyKey])
                 },
                 style: {
-                    display: property.display
+                    display: propertyProps.display
                 }
             }, [
                 (function() {
-                    return controlUtils[property.type.name](h, property, propertyKey);
+                    return controlUtils[propertyProps.type.name](h, propertyProps, propertyKey, vm.component.props);
                 })()
             ]));
         });
@@ -50,7 +50,7 @@ export default {
                 labelPosition: "top"
             }
 
-        }, comAttributeList);
+        }, componentAttributeList);
 
     },
     components: {

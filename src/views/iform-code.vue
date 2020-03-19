@@ -4,6 +4,7 @@
 </template>
 
 <script>
+
 export default {
     name: 'IFormCode',
     props: {
@@ -20,13 +21,18 @@ export default {
 
             },
             jsonViewerCopyable: {
-                copyText: '复制',
-                copiedText: '复制成功'
+                copyText: '',
+                copiedText: ''
             }
         };
     },
     mounted() {
+
+        //this.jsonViewerCopyable.copyText = this.$key('copyText');
+        //this.jsonViewerCopyable.copiedText = this.$key('copiedText');
+
         this.componentList = this.$store.state.componentSelect;
+
     },
     methods: {
 

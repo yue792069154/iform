@@ -153,7 +153,9 @@ export default {
         borderStyle: "边框样式",
         borderColor: "边框颜色",
         dotted: "点状边框",
-        solid: "实线边框"
+        solid: "实线边框",
+        copyText:"复制",
+        copiedText:"复制成功"
     },
     'en-US': {
 

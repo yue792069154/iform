@@ -57,7 +57,7 @@ const renderFormItem = function (h, com, comSelect, preview) {
             props: {
                 label: com.label
             },
-            class: com.active ? prefixCls + '-item' + ' ' + prefixCls + '-active' : prefixCls + '-item',
+            class: com.active ? prefixCls + '-item' + ' ' + prefixCls + '-item-active' : prefixCls + '-item',
             key: com.key
         }, renderTools(h, com, comSelect));
     }
@@ -78,7 +78,7 @@ const renderLayoutItem = function (h, com, comSelect, preview) {
         return renderPreviewLayoutItem(h, com);
     } else {
         return h("div", {
-            class: com.active ? prefixCls + '-item' + ' ' + prefixCls + '-active' : prefixCls + '-item',
+            class: com.active ? prefixCls + '-item' + ' ' + prefixCls + '-item-active' : prefixCls + '-item',
             key: com.key
         }, renderTools(h, com, comSelect));
     }

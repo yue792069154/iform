@@ -99,7 +99,7 @@
                                         </div>
                                     </div>
                                     <div :class="[prefixCls + '-card-content padding-left-10px padding-right-10px padding-bottom-10px']">
-                                        <i-form-attribute :component="componentActive" :comAttribute="group.children"></i-form-attribute>
+                                        <i-form-attribute :component="componentActive" :componentAttribute="group.children"></i-form-attribute>
                                     </div>
                                 </div>
     

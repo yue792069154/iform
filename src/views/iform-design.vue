@@ -25,12 +25,12 @@ export default {
         }
     },
     created() {
-         this.componentSelect = this.$store.state.componentSelect;
+        this.componentSelect = this.$store.state.componentSelect; //this.$store.state.componentSelect;
     },
 
     render(h) {
 
-       
+
         var vm = this;
 
         return h("Form", {
@@ -93,10 +93,17 @@ export default {
 
                     },
                     choose: function(e) {
+
+                        _.forEach(vm.componentSelect.componentList, function(component) {
+                            component.active = false;
+                        });
+
                         var component = vm.componentSelect.componentList[e.oldIndex];
+                        component.active = true;
+                        
                         vm.$store.commit({
-                            type: "setComponentAttributeGroupList",
-                            componentAttributeGroupList: component.groupList
+                            type: "setComponentActive",
+                            componentActive: component
                         });
                     }
                 }

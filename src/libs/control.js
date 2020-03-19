@@ -1,424 +1,423 @@
- 
-import _ from "lodash";
+ import _ from "lodash";
 
-const size = "large";
-
-
-const handelEvent = function (property, value) {
-    if (_.isFunction(property.onChange)) {
-        property.onChange(value);
-    }
-};
-
-const handelAddEvent = function (property) {
-    if (_.isFunction(property.onAdd)) {
-        property.onAdd();
-    }
-};
-
-const handelClickEvent = function (property) {
-    if (_.isFunction(property.onClick)) {
-        property.onClick();
-    }
-};
+ const size = "large";
 
 
-export default  {
-    String: (h, property, propertyName) => {
-        return h("Input", {
-            props: {
-                size: size,
-                value: property.props[propertyName],
-                clearable: property.clearable || false,
-                type: property.textarea ? "textarea" : "text",
-                rows: 3
-            },
-            on: {
-                "on-change": (e) => {
-                    handelEvent(property, e.target.value);
-                }
-            }
-        }, [
-            (function () {
-                if (property.slot) {
-                    return property.slotRender(h);
-                }
-            })()
-        ]);
-    },
-    Boolean: (h, property, propertyName) => {
-        return h("Checkbox", {
-            props: {
-                size: size,
-                value: property.props[propertyName]
-            },
-            on: {
-                "on-change": (value) => {
-                    handelEvent(property, value);
-                }
-            }
-        });
-    },
-    Number: (h, property, propertyName) => {
-        return h("InputNumber", {
-            props: {
-                size: size,
-                value: property.props[propertyName],
-                min: property.min || 1,
-                max: property.max || 100
-            },
-            style: {
-                width: '100%'
-            },
-            on: {
-                "on-change": (value) => {
-                    handelEvent(property, value);
-                }
-            }
-        });
-    },
-    Array: (h, property, propertyName) => {
+ const handelEvent = function (propertyProps, value) {
+     if (_.isFunction(propertyProps.onChange)) {
+        propertyProps.onChange(value);
+     }
+ };
 
-        var optionList = [];
+ const handelAddEvent = function (propertyProps) {
+     if (_.isFunction(propertyProps.onAdd)) {
+        propertyProps.onAdd();
+     }
+ };
 
-        switch (property.render) {
-            case "RadioGroup":
-
-                _.mapKeys(property.optionList, (item) => {
-                    optionList.push(h("Radio", {
-                        props: {
-                            label: item.value
-                        }
-                    }, [item.label]));
-                });
-
-                return h("RadioGroup", {
-                    props: {
-                        size: size,
-                        type: "button",
-                        value: property.props[propertyName]
-                    },
-                    on: {
-                        "on-change": (value) => {
-                            var option = _.find(property.optionList, function (option) {
-                                return option.value == value;
-                            });
-                            handelEvent(property, option);
-                        },
-                        "on-clear": () => {
-                            handelEvent(property, null);
-                        }
-                    }
-                }, optionList);
+ const handelClickEvent = function (propertyProps) {
+     if (_.isFunction(propertyProps.onClick)) {
+        propertyProps.onClick();
+     }
+ };
 
 
-            case "custom":
+ export default {
+     String: (h, propertyProps, propertyKey, componentProps) => {
+         return h("Input", {
+             props: {
+                 size: size,
+                 value: componentProps[propertyKey],
+                 clearable: propertyProps.clearable || false,
+                 type: propertyProps.textarea ? "textarea" : "text",
+                 rows: 3
+             },
+             on: {
+                 "on-change": (e) => {
+                     handelEvent(propertyProps, e.target.value);
+                 }
+             }
+         }, [
+             (function () {
+                 if (propertyProps.slot) {
+                     return propertyProps.slotRender(h);
+                 }
+             })()
+         ]);
+     },
+     Boolean: (h, propertyProps, propertyKey, componentProps) => {
+         return h("Checkbox", {
+             props: {
+                 size: size,
+                 value: componentProps[propertyKey],
+             },
+             on: {
+                 "on-change": (value) => {
+                     handelEvent(propertyProps, value);
+                 }
+             }
+         });
+     },
+     Number: (h, propertyProps, propertyKey, componentProps) => {
+         return h("InputNumber", {
+             props: {
+                 size: size,
+                 value: componentProps[propertyKey],
+                 min: propertyProps.min || 1,
+                 max: propertyProps.max || 100
+             },
+             style: {
+                 width: '100%'
+             },
+             on: {
+                 "on-change": (value) => {
+                     handelEvent(propertyProps, value);
+                 }
+             }
+         });
+     },
+     Array: (h, propertyProps, propertyKey, componentProps) => {
 
-                var renderRadio = function () {
+         var optionList = [];
 
-                    if (property.renderRadio === false) {
-                        return false;
-                    }
+         switch (propertyProps.render) {
+             case "RadioGroup":
 
-                    return h("iCol", {
-                        props: {
-                            span: 2
-                        }
-                    }, [h("Radio", {
-                        size: size,
-                    })]);
+                 _.mapKeys(propertyProps.optionList, (item) => {
+                     optionList.push(h("Radio", {
+                         props: {
+                             label: item.value
+                         }
+                     }, [item.label]));
+                 });
 
-                };
-
-                var renderInput = function (option) {
-                    return h("iCol", {
-                        props: {
-                            span: property.renderRadio === false ? 20 : 18
-                        }
-                    }, [(function () {
-
-                        switch (property.renderType) {
-                            case "InputNumber":
-                                return h("InputNumber", {
-                                    props: {
-                                        size: size,
-                                        value: option.value,
-                                        min: 1,
-                                        max: 24
-                                    },
-                                    style: {
-                                        width: '100%'
-                                    },
-                                    on: {
-                                        "on-change": (value) => {
-                                            option.value = value;
-                                            handelEvent(property, property.optionList);
-                                        }
-                                    }
-                                });
-
-                            default:
-                                return h("Input", {
-                                    props: {
-                                        size: size,
-                                        value: option.label || option.title || option.value
-                                    },
-                                    on: {
-                                        "on-change": (e) => {
-                                            option.label = option.title = e.target.value;
-                                            handelEvent(property, property.optionList);
-                                        }
-                                    }
-
-                                });
-                        }
-
-                    })()]);
-                };
-
-                var renderDelete = function (option, index) {
-                    var self = this;
-                    return h("iCol", {
-                        props: {
-                            span: 2
-                        },
-                        style: {
-                            cursor: "pointer"
-                        }
-                    }, [h("Icon", {
-                        props: {
-                            type: "ios-trash",
-                            size: "22",
-                            color: "#F57A78"
-                        },
-                        on: {
-                            click: function (e) {
-                                property.optionList.splice(index, 1);
-                            }
-                        }
-                    })]);
-                };
-
-                var renderMove = function (option) {
-                    return h("iCol", {
-                        props: {
-                            span: 2
-                        },
-                        style: {
-                            cursor: "move"
-                        },
-                        class: "renderMove"
-                    }, [h("Icon", {
-                        props: {
-                            type: "ios-list",
-                            size: "24"
-                        }
-                    })]);
-                };
-
-                _.mapKeys(property.optionList, (option, index) => {
-                    optionList.push(h("Row", {
-                        props: {
-
-                        },
-                        style: {
-                            cursor: "pointer",
-                            marginBottom: "4px"
-                        }
-                    }, [renderRadio(option), renderInput(option), renderDelete(option, index), renderMove(option)]));
-                });
-
-                return h("div", {
-
-                }, [h("draggable", {
-                    props: {
-                        options: {
-                            group: {
-                                name: 'psp-form-array'
-                            },
-                            animation: 150,
-                            handle: ".renderMove"
-                        }
-                    },
-                    on: {
-                        update: function (e) {
-
-                            var com = property.optionList[e.oldIndex];
-                            property.optionList.splice(e.oldIndex, 1);
-                            property.optionList.splice(e.newIndex, 0, com);
-
-                        }
-                    }
-                }, optionList), h("Row", {
-                    props: {
-
-                    }
-                }, [h("iCol", {
-                    props: {
-                        span: 24
-                    }
-                }, [h("a", {
-                    on: {
-                        click: (e) => {
-
-                            e.stopPropagation();
-
-                            handelAddEvent(property);
-
-                        }
-                    },
-                    style: {
-                        fontSize: "16px",
-                        cursor: "pointer"
-                    }
-                }, [property.renderAction])])])]);
-
-            default:
-
-                _.mapKeys(property.optionList, (option) => {
-                    optionList.push(h("Option", {
-                        props: {
-                            value: option.value,
-                            key: option.value,
-                            label: option.label
-                        }
-                    }, [
-                        (function () {
-                            if (property.slot) {
-                                return property.slotRender(h, option);
-                            }
-                        })()
-                    ]));
-                });
-
-                return h("Select", {
-                    props: {
-                        size: size,
-                        value: property.props[propertyName],
-                        filterable: property.filterable || true,
-                        clearable: property.clearable || false
-                    },
-                    on: {
-                        "on-change": (value) => {
-                            var option = _.find(property.optionList, function (option) {
-                                return option.value == value;
-                            });
-                            handelEvent(property, option);
-                        },
-                        "on-clear": () => {
-                            handelEvent(property, null);
-                        }
-                    }
-                }, optionList);
-        }
-
-    },
-    Function: (h, property, propertyName) => {
+                 return h("RadioGroup", {
+                     props: {
+                         size: size,
+                         type: "button",
+                         value: componentProps[propertyKey],
+                     },
+                     on: {
+                         "on-change": (value) => {
+                             var option = _.find(propertyProps.optionList, function (option) {
+                                 return option.value == value;
+                             });
+                             handelEvent(propertyProps, option);
+                         },
+                         "on-clear": () => {
+                             handelEvent(propertyProps, null);
+                         }
+                     }
+                 }, optionList);
 
 
-        switch (property.render) {
+             case "custom":
 
-            case "ColorPicker":
+                 var renderRadio = function () {
 
-                return h("ColorPicker", {
-                    props: {
-                        size: size,
-                        value: property.props[propertyName]
-                    },
-                    on: {
-                        "on-change": (e) => {
-                            handelEvent(property, e);
-                        }
-                    }
-                });
+                     if (propertyProps.renderRadio === false) {
+                         return false;
+                     }
 
-            case "IconSelect":
+                     return h("iCol", {
+                         props: {
+                             span: 2
+                         }
+                     }, [h("Radio", {
+                         size: size,
+                     })]);
 
-                return h("Input", {
-                    props: {
-                        size: size,
-                        icon: "ios-more",
-                        value: property.props[propertyName]
-                    },
-                    on: {
-                        "on-click": (e) => {
-                            iview.Modal.confirm({
-                                render: (h) => {
-                                    return h('com-font', {
-                                        on: {
-                                            "onSelect": (icon) => {
-                                                handelEvent(property, icon);
-                                                iview.Modal.remove();
-                                            }
-                                        }
-                                    });
-                                },
-                                closable: true,
-                                width: "700"
-                            });
-                        },
-                        "on-change": (e) => {
-                            handelEvent(property, {
-                                value: e.target.value
-                            });
-                        }
-                    }
-                });
-        }
+                 };
+
+                 var renderInput = function (option) {
+                     return h("iCol", {
+                         props: {
+                             span: propertyProps.renderRadio === false ? 20 : 18
+                         }
+                     }, [(function () {
+
+                         switch (propertyProps.renderType) {
+                             case "InputNumber":
+                                 return h("InputNumber", {
+                                     props: {
+                                         size: size,
+                                         value: option.value,
+                                         min: 1,
+                                         max: 24
+                                     },
+                                     style: {
+                                         width: '100%'
+                                     },
+                                     on: {
+                                         "on-change": (value) => {
+                                             option.value = value;
+                                             handelEvent(propertyProps, propertyProps.optionList);
+                                         }
+                                     }
+                                 });
+
+                             default:
+                                 return h("Input", {
+                                     props: {
+                                         size: size,
+                                         value: option.label || option.title || option.value
+                                     },
+                                     on: {
+                                         "on-change": (e) => {
+                                             option.label = option.title = e.target.value;
+                                             handelEvent(propertyProps, propertyProps.optionList);
+                                         }
+                                     }
+
+                                 });
+                         }
+
+                     })()]);
+                 };
+
+                 var renderDelete = function (option, index) {
+                     var self = this;
+                     return h("iCol", {
+                         props: {
+                             span: 2
+                         },
+                         style: {
+                             cursor: "pointer"
+                         }
+                     }, [h("Icon", {
+                         props: {
+                             type: "ios-trash",
+                             size: "22",
+                             color: "#F57A78"
+                         },
+                         on: {
+                             click: function (e) {
+                                 propertyProps.optionList.splice(index, 1);
+                             }
+                         }
+                     })]);
+                 };
+
+                 var renderMove = function (option) {
+                     return h("iCol", {
+                         props: {
+                             span: 2
+                         },
+                         style: {
+                             cursor: "move"
+                         },
+                         class: "renderMove"
+                     }, [h("Icon", {
+                         props: {
+                             type: "ios-list",
+                             size: "24"
+                         }
+                     })]);
+                 };
+
+                 _.mapKeys(propertyProps.optionList, (option, index) => {
+                     optionList.push(h("Row", {
+                         props: {
+
+                         },
+                         style: {
+                             cursor: "pointer",
+                             marginBottom: "4px"
+                         }
+                     }, [renderRadio(option), renderInput(option), renderDelete(option, index), renderMove(option)]));
+                 });
+
+                 return h("div", {
+
+                 }, [h("draggable", {
+                     props: {
+                         options: {
+                             group: {
+                                 name: 'psp-form-array'
+                             },
+                             animation: 150,
+                             handle: ".renderMove"
+                         }
+                     },
+                     on: {
+                         update: function (e) {
+
+                             var com = propertyProps.optionList[e.oldIndex];
+                             propertyProps.optionList.splice(e.oldIndex, 1);
+                             propertyProps.optionList.splice(e.newIndex, 0, com);
+
+                         }
+                     }
+                 }, optionList), h("Row", {
+                     props: {
+
+                     }
+                 }, [h("iCol", {
+                     props: {
+                         span: 24
+                     }
+                 }, [h("a", {
+                     on: {
+                         click: (e) => {
+
+                             e.stopPropagation();
+
+                             handelAddEvent(propertyProps);
+
+                         }
+                     },
+                     style: {
+                         fontSize: "16px",
+                         cursor: "pointer"
+                     }
+                 }, [propertyProps.renderAction])])])]);
+
+             default:
+
+                 _.mapKeys(propertyProps.optionList, (option) => {
+                     optionList.push(h("Option", {
+                         props: {
+                             value: option.value,
+                             key: option.value,
+                             label: option.label
+                         }
+                     }, [
+                         (function () {
+                             if (propertyProps.slot) {
+                                 return propertyProps.slotRender(h, option);
+                             }
+                         })()
+                     ]));
+                 });
+
+                 return h("Select", {
+                     props: {
+                         size: size,
+                         value: componentProps[propertyKey],
+                         filterable: propertyProps.filterable || true,
+                         clearable: propertyProps.clearable || false
+                     },
+                     on: {
+                         "on-change": (value) => {
+                             var option = _.find(propertyProps.optionList, function (option) {
+                                 return option.value == value;
+                             });
+                             handelEvent(propertyProps, option);
+                         },
+                         "on-clear": () => {
+                             handelEvent(propertyProps, null);
+                         }
+                     }
+                 }, optionList);
+         }
+
+     },
+     Function: (h, propertyProps, propertyKey, componentProps) => {
+
+
+         switch (propertyProps.render) {
+
+             case "ColorPicker":
+
+                 return h("ColorPicker", {
+                     props: {
+                         size: size,
+                         value: componentProps[propertyKey],
+                     },
+                     on: {
+                         "on-change": (e) => {
+                             handelEvent(propertyProps, e);
+                         }
+                     }
+                 });
+
+             case "IconSelect":
+
+                 return h("Input", {
+                     props: {
+                         size: size,
+                         icon: "ios-more",
+                         value: componentProps[propertyKey],
+                     },
+                     on: {
+                         "on-click": (e) => {
+                             iview.Modal.confirm({
+                                 render: (h) => {
+                                     return h('com-font', {
+                                         on: {
+                                             "onSelect": (icon) => {
+                                                 handelEvent(propertyProps, icon);
+                                                 iview.Modal.remove();
+                                             }
+                                         }
+                                     });
+                                 },
+                                 closable: true,
+                                 width: "700"
+                             });
+                         },
+                         "on-change": (e) => {
+                             handelEvent(propertyProps, {
+                                 value: e.target.value
+                             });
+                         }
+                     }
+                 });
+         }
 
 
 
-    },
-    Object: (h, property, propertyName) => {
-        return h("Input", {
-            props: {
-                size: size,
-                value: property.props[propertyName],
-                clearable: property.clearable || false
-            },
-            on: {
-                "on-change": (e) => {
-                    handelEvent(property, e.target.value);
-                }
-            }
-        }, [
-            (function () {
-                if (property.slot) {
-                    return property.slotRender(h);
-                }
-            })()
-        ]);
-    },
-    Symbol: (h, property, propertyName) => {
-        return h("Input", {
-            props: {
-                size: size,
-                value: property.props[propertyName],
-                clearable: property.clearable || false
-            },
-            on: {
-                "on-change": (e) => {
-                    handelEvent(property, e.target.value);
-                }
-            }
-        }, [
-            (function () {
-                if (property.slot) {
-                    return property.slotRender(h);
-                }
-            })()
-        ]);
-    },
-    Date: (h, property, propertyName) => {
-        return h("DatePicker", {
-            props: {
-                size: size
-            },
-            on: {
-                "on-change": (e) => {
-                    handelEvent(property, value);
-                }
-            }
-        });
-    }
-};
+     },
+     Object: (h, propertyProps, propertyKey, componentProps) => {
+         return h("Input", {
+             props: {
+                 size: size,
+                 value: componentProps[propertyKey],
+                 clearable: propertyProps.clearable || false
+             },
+             on: {
+                 "on-change": (e) => {
+                     handelEvent(propertyProps, e.target.value);
+                 }
+             }
+         }, [
+             (function () {
+                 if (propertyProps.slot) {
+                     return propertyProps.slotRender(h);
+                 }
+             })()
+         ]);
+     },
+     Symbol: (h, propertyProps, propertyKey, componentProps) => {
+         return h("Input", {
+             props: {
+                 size: size,
+                 value: componentProps[propertyKey],
+                 clearable: propertyProps.clearable || false
+             },
+             on: {
+                 "on-change": (e) => {
+                     handelEvent(propertyProps, e.target.value);
+                 }
+             }
+         }, [
+             (function () {
+                 if (propertyProps.slot) {
+                     return propertyProps.slotRender(h);
+                 }
+             })()
+         ]);
+     },
+     Date: (h, propertyProps, propertyKey, componentProps) => {
+         return h("DatePicker", {
+             props: {
+                 size: size
+             },
+             on: {
+                 "on-change": (e) => {
+                     handelEvent(propertyProps, value);
+                 }
+             }
+         });
+     }
+ };
