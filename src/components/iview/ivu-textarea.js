@@ -1,6 +1,4 @@
  import Ivu from "./ivu";
- import regexList from "../../libs/regex";
-
  class IvuTextarea extends Ivu {
 
      constructor(Vue) {
@@ -15,9 +13,9 @@
 
          this.icon = 'fa fa-pencil-square-o';
 
-         let props = {
+         this.props = {
 
-             width: "100",
+             width: 100,
              type: "textarea",
              size: "large",
              placeholder: Vue.$t('pleaseInput'),
@@ -26,121 +24,67 @@
              readonly: false,
              maxlength: 200,
              rows: 5,
-
-
              value: null,
 
              label: self.label,
              code: self.getComponentCode(),
 
-             regex: "",
-             regexType: "regexBuilit",
-             regexBuilit: null,
-             regexCustom: null,
-             regexMessage: "",
+             rule: '',
+             ruleType: 'regexBuilit',
+             ruleMessage: '',
 
              required: false
 
          };
-
-         this.render = (h) => {
-             return h("Input", {
-                 props: props,
-                 style: {
-                     width: props.width + "%"
-                 }
-             });
-         };
-
-         this.props = props;
 
          this.groupList = [{
              groupName: Vue.$t('basicAttr'),
              groupCode: 'basicAttr',
              children: {
                  code: {
-                     type: String,
-                     props: props,
-                     onChange: function (value) {
-                         props.code = value;
-                     }
+                     type: "String"
                  },
                  label: {
-                     type: String,
-                     props: props,
-                     onChange: function (value) {
-                         self.label = value;
-                         props.label = value;
-                     }
+                     type: "String"
                  },
                  width: {
-                     type: Number,
-                     props: props,
-                     onChange: function (value) {
-                         props.width = value;
-                     }
+                     type: "Number"
                  },
                  size: {
-                     type: Array,
-                     props: props,
-                     optionList: [{
-                         label: Vue.$t('large'),
-                         value: "large"
-                     }, {
-                         label: Vue.$t('small'),
-                         value: "small"
-                     }, {
-                         label: Vue.$t('default'),
-                         value: "default"
-                     }],
-                     onChange: function (option) {
-                         props.size = option.value;
-                     }
+                    type: 'Array',
+                    render: 'Select',
+                    optionList: [{
+                        label: Vue.$t('large'),
+                        value: 'large'
+                    }, {
+                        label: Vue.$t('small'),
+                        value: 'small'
+                    }, {
+                        label: Vue.$t('default'),
+                        value: 'default'
+                    }]
                  },
                  placeholder: {
-                     type: String,
-                     props: props,
-                     clearable: true,
-                     onChange: function (value) {
-                         props.placeholder = value;
-                     }
+                    type: 'String',
+                    clearable: true
                  },
                  rows: {
-                     type: Number,
-                     props: props,
-                     max: 20,
-                     onChange: function (value) {
-                         props.rows = value;
-                     }
+                     type: "Number",
+                     min: 2,
+                     max: 20
                  },
-                 defaultValue: {
-                     type: String,
-                     props: props,
-                     clearable: true,
-                     onChange: function (value) {
-                         props.value = value;
-                     }
+                 value: {
+                     type: "String",
+                     clearable: true
                  },
                  clearable: {
-                     type: Boolean,
-                     props: props,
-                     onChange: function (value) {
-                         props.clearable = value;
-                     }
+                     type: "Boolean"
                  },
                  disabled: {
-                     type: Boolean,
-                     props: props,
-                     onChange: function (value) {
-                         props.disabled = value;
-                     }
+                     type: "Boolean"
                  },
                  readonly: {
-                     type: Boolean,
-                     props: props,
-                     onChange: function (value) {
-                         props.readonly = value;
-                     }
+                     type: "Boolean"
                  }
              }
          }, {
@@ -148,89 +92,14 @@
              groupCode: 'validateAttr',
              children: {
                  required: {
-                     type: Boolean,
-                     props: props,
-                     onChange: function (value) {
-                         props.required = value;
-                     }
+                     type: "Boolean"
                  },
                  maxlength: {
-                     type: Number,
-                     props: props,
-                     onChange: function (value) {
-                         props.maxlength = value;
-                     }
+                     type: "Number"
                  },
-                 regexType: {
-                     type: Array,
-                     props: props,
-                     render: "RadioGroup",
-                     optionList: [{
-                         label: Vue.$t('regexBuilit'),
-                         value: "regexBuilit"
-                     }, {
-                         label: Vue.$t('regexCustom'),
-                         value: "regexCustom"
-                     }],
-                     onChange: function (option) {
-
-                         props.regexType = option.value;
-                         props.regex = null;
-                         props.regexMessage = null;
-                         props.regexBuilit = null;
-                         props.regexCustom = null;
-
-                         switch (option.value) {
-
-                             case "regexBuilit":
-                                 self.groupList[1].children.regexBuilit.display = "inherit";
-                                 self.groupList[1].children.regexCustom.display = "none";
-                                 break;
-
-                             case "regexCustom":
-                                 self.groupList[1].children.regexBuilit.display = "none";
-                                 self.groupList[1].children.regexCustom.display = "inherit";
-                                 break;
-
-                             default:
-
-                                 break;
-                         }
-                     }
-                 },
-                 regexBuilit: {
-                     type: Array,
-                     props: props,
-                     label: false,
-                     clearable: true,
-                     optionList: regexList,
-                     onChange: function (value) {
-                         if (ObjectUtils.hasValue(value)) {
-                             props.regexBuilit = option.value;
-                             props.regex = option.value;
-                             props.regexMessage = option.regexMessage;
-                         }
-                     }
-                 },
-                 regexCustom: {
-                     type: String,
-                     props: props,
-                     label: false,
-                     display: "none",
-                     clearable: true,
-                     onChange: function (value) {
-                         props.regexCustom = value;
-                         props.regex = value;
-                     }
-                 },
-                 regexMessage: {
-                     type: String,
-                     props: props,
-                     clearable: true,
-                     onChange: function (value) {
-                         props.regexMessage = value;
-                     }
-                 }
+                 rule: {
+                    type: 'Rule',
+                }
              }
          }];
      }

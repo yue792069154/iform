@@ -1,14 +1,7 @@
-var fwCore = require("comjs:fw-core");
-var ObjectUtils = fwCore.util.ObjectUtils;
-const lang = require('../../../lang/index.js');
-
-const lodash = require('comjs:lodash');
-
-const Ivu = require('./ivu.js');
-
+import Ivu from './ivu';
 class IvuButton extends Ivu {
 
-    constructor() {
+    constructor(Vue) {
 
         super();
 
@@ -16,13 +9,13 @@ class IvuButton extends Ivu {
 
         this.type = 'IvuButton';
 
-        this.label = lang.ivuButton;
+        this.label = Vue.$t('ivuButton');
 
         this.layout = true;
 
         this.icon = 'fa fa-pencil-square-o';
 
-        let props = {
+        this.props = {
 
             type: "default",
             ghost: false,
@@ -39,28 +32,15 @@ class IvuButton extends Ivu {
 
         };
 
-        this.render = (h) => {
-            return h("Button", {
-                props: props
-            }, [props.buttonText]);
-        };
-
-        this.props = props;
-
         this.groupList = [{
-            groupName: lang.basicAttr,
+            groupName: Vue.$t('basicAttr'),
             groupCode: 'basicAttr',
             children: {
                 code: {
-                    type: String,
-                    props: props,
-                    onChange: function (value) {
-                        props.code = value;
-                    }
+                    type: "String"
                 },
                 type: {
-                    type: Array,
-                    props: props,
+                    type: "Array",
                     optionList: [{
                         label: "default",
                         value: "default"
@@ -85,81 +65,43 @@ class IvuButton extends Ivu {
                     }, {
                         label: "error",
                         value: "error"
-                    }],
-                    onChange: function (option) {
-                        props.type = option.value;
-                    }
+                    }]
                 },
 
                 size: {
-                    type: Array,
-                    props: props,
+                    type: "Array",
                     optionList: [{
-                        label: lang.large,
+                        label: Vue.$t('large'),
                         value: "large"
                     }, {
-                        label: lang.small,
+                        label: Vue.$t('small'),
                         value: "small"
                     }, {
-                        label: lang.default,
+                        label: Vue.$t('default'),
                         value: "default"
-                    }],
-                    onChange: function (option) {
-                        props.size = option.value;
-                    }
+                    }]
                 },
                 ghost: {
-                    type: Boolean,
-                    props: props,
-                    onChange: function (value) {
-                        props.ghost = value;
-                    }
+                    type: "Boolean"
                 },
                 long: {
-                    type: Boolean,
-                    props: props,
-                    onChange: function (value) {
-                        props.long = value;
-                    }
+                    type: "Boolean"
                 },
                 buttonText: {
-                    type: String,
-                    props: props,
-                    clearable: true,
-                    textarea: true,
-                    onChange: function (value) {
-                        props.buttonText = value;
-                    }
+                    type: "String"
                 },
                 disabled: {
-                    type: Boolean,
-                    props: props,
-                    onChange: function (value) {
-                        props.disabled = value;
-                    }
+                    type: "Boolean"
                 },
                 icon: {
-                    type: String,
-                    props: props,
-                    onChange: function (value) {
-                        props.icon = value;
-                    }
+                    type: "String"
                 },
                 "custom-icon": {
-                    type: Function,
-                    props: props,
-                    render: "IconSelect",
-                    onChange: function (icon) {
-                        if (ObjectUtils.hasValue(icon)) {
-                            props["custom-icon"] = icon.value;
-                        } else {
-                            props["custom-icon"] = null;
-                        }
-                    }
+                    type: "Icon"
                 }
             }
         }];
     }
 }
 
-module.exports = IvuButton;
+export default IvuButton;

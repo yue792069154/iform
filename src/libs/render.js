@@ -1,9 +1,11 @@
 const prefixCls = 'iform';
 
 import _ from "lodash";
+import IvuRender from "../components/iview/ivu-render";
+import  '../styles/common/iconfont/iconfont.css';
 
 const renderTools = function (h, com, comSelect) {
-    return [com.render(h, false), (function () {
+    return [IvuRender[com.type](h, com.props), (function () {
         if (com.active) {
             return h("div", {
                 class: prefixCls + '-item-bottom-tools'
@@ -55,7 +57,7 @@ const renderFormItem = function (h, com, comSelect, preview) {
     } else {
         return h("FormItem", {
             props: {
-                label: com.label
+                label: com.props.label
             },
             class: com.active ? prefixCls + '-item' + ' ' + prefixCls + '-item-active' : prefixCls + '-item',
             key: com.key
@@ -66,7 +68,7 @@ const renderFormItem = function (h, com, comSelect, preview) {
 const renderPreviewFormItem = function (h, com) {
     return h("FormItem", {
         props: {
-            label: com.label
+            label: com.props.label
         },
         key: com.key
     }, [com.render(h, true)]);

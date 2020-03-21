@@ -1,18 +1,7 @@
-var fwCore = require("comjs:fw-core");
-var ObjectUtils = fwCore.util.ObjectUtils;
-const lodash = require('comjs:lodash');
-
-const iconfont = require("comjs:iconfont-json");
-require("comjs:font-awesome");
-require("comjs:iconfont");
-
-const lang = require('../../../lang/index.js');
-const regexList = require('../../../utils/regex.js');
-const Ivu = require('./ivu.js');
-
+import Ivu from './ivu';
 class IvuDatePicker extends Ivu {
 
-    constructor() {
+    constructor(Vue) {
 
         super();
 
@@ -20,16 +9,16 @@ class IvuDatePicker extends Ivu {
 
         this.type = 'IvuDatePicker';
 
-        this.label = lang.ivuDatePicker;
+        this.label = Vue.$t('ivuDatePicker');
 
         this.icon = 'fa fa-pencil-square-o';
 
-        let props = {
+        this.props = {
 
             width: "100",
             type: "date",
             size: "large",
-            placeholder: lang.pleaseSelect,
+            placeholder: Vue.$t('pleaseSelect'),
             clearable: false,
             disabled: false,
             readonly: false,
@@ -47,138 +36,89 @@ class IvuDatePicker extends Ivu {
 
         };
 
-        this.render = (h) => {
-            return h("DatePicker", {
-                props: props,
-                style: {
-                    width: props.width + "%"
-                }
-            });
-        };
-
-
-        this.props = props;
-
         this.groupList = [{
-            groupName: lang.basicAttr,
+            groupName: Vue.$t('basicAttr'),
             groupCode: 'basicAttr',
             children: {
                 code: {
-                    type: String,
-                    props: props,
-                    onChange: function (value) {
-                        props.code = value;
-                    }
+                    type: "String"
                 },
                 label: {
-                    type: String,
-                    props: props,
-                    onChange: function (value) {
-                        self.label = value;
-                        props.label = value;
-                    }
+                    type: "String"
                 },
                 type: {
-                    type: Array,
-                    props: props,
+                    type: "Array",
                     optionList: [{
-                        label: lang.date,
+                        label: Vue.$t("date"),
                         value: "date",
                         format: "yyyy-MM-dd"
                     }, {
-                        label: lang.daterange,
+                        label: Vue.$t("daterange"),
                         value: "daterange",
                         format: "yyyy-MM-dd"
                     }, {
-                        label: lang.datetime,
+                        label: Vue.$t("datetime"),
                         value: "datetime",
                         format: "yyyy-MM-dd HH:mm:ss"
                     }, {
-                        label: lang.datetimerange,
+                        label: Vue.$t("datetimerange"),
                         value: "datetimerange",
                         format: "yyyy-MM-dd HH:mm:ss"
                     }, {
-                        label: lang.year,
+                        label: Vue.$t("year"),
                         value: "year",
                         format: "yyyy"
                     }, {
-                        label: lang.month,
+                        label: Vue.$t("month"),
                         value: "month",
                         format: "yyyy-MM"
-                    }],
-                    onChange: function (option) {
-                        props.type = option.value;
-                        props.format = option.format;
-                    }
+                    }]
                 },
                 width: {
-                    type: Number,
-                    props: props,
-                    onChange: function (value) {
-                        props.width = value;
-                    }
+                    type: "Number"
                 },
                 size: {
-                    type: Array,
-                    props: props,
+                    type: 'Array',
+                    render: 'Select',
                     optionList: [{
-                        label: lang.large,
-                        value: "large"
+                        label: Vue.$t('large'),
+                        value: 'large'
                     }, {
-                        label: lang.small,
-                        value: "small"
+                        label: Vue.$t('small'),
+                        value: 'small'
                     }, {
-                        label: lang.default,
-                        value: "default"
-                    }],
-                    onChange: function (option) {
-                        props.size = option.value;
-                    }
+                        label: Vue.$t('default'),
+                        value: 'default'
+                    }]
                 },
                 placeholder: {
-                    type: String,
-                    props: props,
-                    clearable: true,
-                    onChange: function (value) {
-                        props.placeholder = value;
-                    }
+                    type: 'String',
+                    clearable: true
+                },
+                value: {
+                    type: 'String',
+                    clearable: true
                 },
                 clearable: {
-                    type: Boolean,
-                    props: props,
-                    onChange: function (value) {
-                        props.clearable = value;
-                    }
+                    type: 'Boolean'
                 },
                 disabled: {
-                    type: Boolean,
-                    props: props,
-                    onChange: function (value) {
-                        props.disabled = value;
-                    }
+                    type: 'Boolean'
                 },
                 readonly: {
-                    type: Boolean,
-                    props: props,
-                    onChange: function (value) {
-                        props.readonly = value;
-                    }
+                    type: 'Boolean'
                 }
             }
         }, {
-            groupName: lang.validateAttr,
+            groupName: Vue.$t('validateAttr'),
             groupCode: 'validateAttr',
             children: {
                 required: {
-                    type: Boolean,
-                    props: props,
-                    onChange: function (value) {
-                        props.required = value;
-                    }
+                    type: 'Boolean'
                 }
             }
         }];
     }
 }
 
-module.exports = IvuDatePicker;
+export default IvuDatePicker;

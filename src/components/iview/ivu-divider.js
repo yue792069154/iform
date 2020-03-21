@@ -1,9 +1,7 @@
-const lang = require('../../../lang/index.js');
-const Ivu = require('./ivu.js');
-
+import Ivu from './ivu';
 class IvuDivider extends Ivu {
 
-    constructor() {
+    constructor(Vue) {
 
         super();
 
@@ -11,15 +9,15 @@ class IvuDivider extends Ivu {
 
         this.type = 'IvuDivider';
 
-        this.label = lang.ivuDivider;
+        this.label = Vue.$t('ivuDivider');
 
         this.layout = true;
 
         this.icon = 'fa fa-pencil-square-o';
 
-        let props = {
+        this.props = {
 
-            title: lang.ivuDivider,
+            title: Vue.$t('ivuDivider'),
             type: "horizontal",
             orientation: "center",
             dashed: false,
@@ -30,89 +28,55 @@ class IvuDivider extends Ivu {
 
         };
 
-        this.render = (h) => {
-            return h("Divider", {
-                props: props
-            }, [props.title]);
-        };
-
-        this.props = props;
-
         this.groupList = [{
-            groupName: lang.basicAttr,
+            groupName: Vue.$t('basicAttr'),
             groupCode: 'basicAttr',
             children: {
                 code: {
-                    type: String,
-                    props: props,
-                    onChange: function (value) {
-                        props.code = value;
-                    }
+                    type: "String"
                 },
-                label: {
-                    type: String,
-                    props: props,
-                    onChange: function (value) {
-                        self.label = value;
-                        props.label = value;
-                        props.title = value;
-                    }
+                title: {
+                    type: "String"
                 },
                 type: {
-                    type: Array,
-                    props: props,
+                    type: "Array",
                     optionList: [{
-                        label: lang.horizontal,
+                        label: Vue.$t('horizontal'),
                         value: "horizontal"
                     }, {
-                        label: lang.vertical,
+                        label: Vue.$t('vertical'),
                         value: "vertical"
-                    }],
-                    onChange: function (option) {
-                        props.type = option.value;
-                    }
+                    }]
                 },
                 orientation: {
-                    type: Array,
-                    props: props,
+                    type: "Array",
                     optionList: [{
-                        label: lang.left,
+                        label: Vue.$t('left'),
                         value: "left"
                     }, {
-                        label: lang.right,
+                        label: Vue.$t('right'),
                         value: "right"
                     }, {
-                        label: lang.center,
+                        label: Vue.$t('center'),
                         value: "center"
-                    }],
-                    onChange: function (option) {
-                        props.orientation = option.value;
-                    }
+                    }]
                 },
                 dashed: {
-                    type: Boolean,
-                    props: props,
-                    onChange: function (value) {
-                        props.dashed = value;
-                    }
+                    type: "Boolean"
                 },
                 size: {
-                    type: Array,
-                    props: props,
+                    type: "Array",
                     optionList: [{
-                        label: lang.small,
+                        label: Vue.$t('small'),
                         value: "small"
                     }, {
-                        label: lang.default,
+                        label: Vue.$t('default'),
                         value: "default"
-                    }],
-                    onChange: function (option) {
-                        props.size = option.value;
-                    }
+                    }]
                 }
             }
         }];
     }
 }
 
-module.exports = IvuDivider;
+export default IvuDivider;

@@ -1,18 +1,8 @@
-var fwCore = require("comjs:fw-core");
-var ObjectUtils = fwCore.util.ObjectUtils;
-const lodash = require('comjs:lodash');
-const object = require('../../../utils/object.js');
-const iconfont = require("comjs:iconfont-json");
-require("comjs:font-awesome");
-require("comjs:iconfont");
-
-const lang = require('../../../lang/index.js');
-const regexList = require('../../../utils/regex.js');
-const Ivu = require('./ivu.js');
+import Ivu from './ivu';
 
 class IvuSelect extends Ivu {
 
-    constructor() {
+    constructor(Vue) {
 
         super();
 
@@ -20,16 +10,16 @@ class IvuSelect extends Ivu {
 
         this.type = 'IvuSelect';
 
-        this.label = lang.ivuSelect;
+        this.label =  Vue.$t('ivuSelect');
 
         this.icon = 'fa fa-pencil-square-o';
 
-        let props = {
+        this.props = {
 
-            width: "100",
+            width: 100,
             type: "text",
             size: "large",
-            placeholder: lang.pleaseSelect,
+            placeholder:  Vue.$t('pleaseSelect'),
             clearable: false,
             disabled: false,
             readonly: false,
@@ -43,195 +33,68 @@ class IvuSelect extends Ivu {
             required: false,
 
             dataType: "dataStatic",
-            optionList: [{
-                label: "选项1",
-                value: "1"
-            }, {
-                label: "选项2",
-                value: "2"
-            }, {
-                label: "选项3",
-                value: "3"
-            }]
+            dataValue:"",
+            dataStaticList: []
 
         };
-
-        this.render = (h) => {
-            return h("Select", {
-                props: props
-            }, (function () {
-
-                var optionList = [];
-
-                lodash.mapKeys(props.optionList, (item) => {
-                    optionList.push(h("Option", {
-                        props: {
-                            label: item.label,
-                            value: item.value,
-                            key: item.value
-                        },
-                        key: item.value
-                    }));
-                });
-
-                return optionList;
-
-            })());
-        };
-
-        this.props = props;
 
         this.groupList = [{
-            groupName: lang.basicAttr,
+            groupName: Vue.$t('basicAttr'),
             groupCode: 'basicAttr',
             children: {
                 code: {
-                    type: String,
-                    props: props,
-                    onChange: function (value) {
-                        props.code = value;
-                    }
+                    type: 'String'
                 },
                 label: {
-                    type: String,
-                    props: props,
-                    onChange: function (value) {
-                        self.label = value;
-                        props.label = value;
-                    }
+                    type: 'String'
                 },
                 width: {
-                    type: Number,
-                    props: props,
-                    onChange: function (value) {
-                        props.width = value;
-                    }
+                    type: 'Number'
                 },
                 size: {
-                    type: Array,
-                    props: props,
+                    type: 'Array',
+                    render: 'Select',
                     optionList: [{
-                        label: lang.large,
-                        value: "large"
+                        label: Vue.$t('large'),
+                        value: 'large'
                     }, {
-                        label: lang.small,
-                        value: "small"
+                        label: Vue.$t('small'),
+                        value: 'small'
                     }, {
-                        label: lang.default,
-                        value: "default"
-                    }],
-                    onChange: function (option) {
-                        props.size = option.value;
-                    }
+                        label: Vue.$t('default'),
+                        value: 'default'
+                    }]
                 },
                 placeholder: {
-                    type: String,
-                    props: props,
-                    clearable: true,
-                    onChange: function (value) {
-                        props.placeholder = value;
-                    }
+                    type: 'String',
+                    clearable: true
                 },
                 dataType: {
-                    type: Array,
-                    props: props,
-                    render: "RadioGroup",
-                    optionList: [{
-                        label: lang.dataStatic,
-                        value: "dataStatic"
-                    }, {
-                        label: lang.dataRemote,
-                        value: "dataRemote"
-                    }],
-                    onChange: function (option) {
-
-                        props.dataType = option.code;
-
-
-                        switch (option.code) {
-
-                            case "dataStatic":
-                                self.groupList[0].children.dataStatic.display = "inherit";
-                                self.groupList[0].children.dataRemote.display = "none";
-                                break;
-
-                            case "dataRemote":
-                                self.groupList[0].children.dataStatic.display = "none";
-                                self.groupList[0].children.dataRemote.display = "inherit";
-                                break;
-
-                            default:
-
-                                break;
-                        }
-
-                    }
-                },
-                dataStatic: {
-                    type: Array,
-                    props: props,
-                    render: "custom",
-                    optionList: props.optionList,
-                    label: false,
-                    renderAction: lang.addItem,
-                    onAdd: function () {
-                        props.optionList.push({
-                            label: lang.newItem,
-                            value: object.getRandomCode(),
-                            comList: []
-                        });
-                    }
-                },
-                dataRemote: {
-                    type: Array,
-                    props: props,
-                    render: "custom",
-                    label: false,
-                    display: "none",
+                    type: "Data"
                 },
                 filterable: {
-                    type: Boolean,
-                    props: props,
-                    onChange: function (value) {
-                        props.filterable = value;
-                    }
+                    type: "Boolean"
                 },
                 clearable: {
-                    type: Boolean,
-                    props: props,
-                    onChange: function (value) {
-                        props.clearable = value;
-                    }
+                    type: "Boolean"
                 },
                 disabled: {
-                    type: Boolean,
-                    props: props,
-                    onChange: function (value) {
-                        props.disabled = value;
-                    }
+                    type: "Boolean"
                 },
                 readonly: {
-                    type: Boolean,
-                    props: props,
-                    onChange: function (value) {
-                        props.readonly = value;
-                    }
+                    type: "Boolean"
                 }
             }
         }, {
-            groupName: lang.validateAttr,
+            groupName: Vue.$t('validateAttr'),
             groupCode: 'validateAttr',
             children: {
                 required: {
-                    type: Boolean,
-                    props: props,
-                    onChange: function (value) {
-                        props.required = value;
-                    }
+                    type: 'Boolean'
                 }
             }
         }];
     }
 }
 
-module.exports = IvuSelect;
+export default IvuSelect;

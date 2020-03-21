@@ -1,10 +1,7 @@
-const lang = require('../../../lang/index.js');
-
-const Ivu = require('./ivu.js');
-
+import Ivu from './ivu';
 class IvuAlert extends Ivu {
 
-    constructor() {
+    constructor(Vue) {
 
         super();
 
@@ -12,13 +9,13 @@ class IvuAlert extends Ivu {
 
         this.type = 'IvuAlert';
 
-        this.label = lang.ivuAlert;
+        this.label = Vue.$t('ivuAlert');
 
         this.layout = true;
 
         this.icon = 'fa fa-pencil-square-o';
 
-        let props = {
+        this.props = {
 
             type: "info",
             closable: false,
@@ -33,78 +30,47 @@ class IvuAlert extends Ivu {
 
         };
 
-        this.render = (h) => {
-            return h("Alert", {
-                props: props
-            }, [props.title, h("span", {
-                slot: "desc"
-            }, [props.desc])]);
-        };
-
-        this.props = props;
-
         this.groupList = [{
-            groupName: lang.basicAttr,
+            groupName: Vue.$t('basicAttr'),
             groupCode: 'basicAttr',
             children: {
                 code: {
-                    type: String,
-                    props: props,
-                    onChange: function (value) {
-                        props.code = value;
-                    }
+                    type: "String"
                 },
                 type: {
-                    type: Array,
-                    props: props,
+                    type: "Array",
                     optionList: [{
-                        label: lang.info,
+                        label: Vue.$t('info'),
                         value: "info"
                     }, {
-                        label: lang.success,
+                        label: Vue.$t('success'),
                         value: "success"
                     }, {
-                        label: lang.warning,
+                        label: Vue.$t('warning'),
                         value: "warning"
                     }, {
-                        label: lang.error,
+                        label: Vue.$t('error'),
                         value: "error"
-                    }],
-                    onChange: function (option) {
-                        props.type = option.value;
-                    }
+                    }]
                 },
                 title: {
-                    type: String,
-                    props: props,
+                    type: "Textarea",
                     clearable: true,
                     textarea: true,
-                    onChange: function (value) {
-                        props.title = value;
-                    }
+                    maxlength:100,
+                    rows:2
                 },
                 desc: {
-                    type: String,
-                    props: props,
+                    type: "Textarea",
                     clearable: true,
-                    textarea: true,
-                    onChange: function (value) {
-                        props.desc = value;
-                    }
+                    maxlength:1000,
+                    rows:8
                 },
                 closable: {
-                    type: Boolean,
-                    props: props,
-                    onChange: function (value) {
-                        props.closable = value;
-                    }
+                    type: "Boolean"
                 },
                 "show-icon": {
-                    type: Boolean,
-                    props: props,
-                    onChange: function (value) {
-                        props["show-icon"] = value;
-                    }
+                    type: "Boolean"
                 }
             }
         }];

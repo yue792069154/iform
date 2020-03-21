@@ -13,10 +13,12 @@
 
 <script>
 
-import iconfont from '../styles/common/iconfont/iconfont.json';
+import _ from "lodash";
+import iconfont from '../../styles/common/iconfont/iconfont.json';
+import  '../../styles/common/iconfont/iconfont.css';
 
 export default {
-    name: "IFormIcon",
+    name: "IFormItemConfigIconSelect",
     data() {
         return {
             iconList: [],
@@ -27,7 +29,7 @@ export default {
 
         var vm = this;
 
-        lodash.forEach(iconfont.glyphs, function(icon) {
+        _.forEach(iconfont.glyphs, function(icon) {
             vm.iconList.push({
                 label: icon.name,
                 value: "icon iconfont icon" + icon.font_class,
@@ -41,7 +43,7 @@ export default {
     methods: {
         onInputEnter(e) {
 
-            this.iconFilterList = lodash.filter(this.iconList, function(icon) {
+            this.iconFilterList = _.filter(this.iconList, function(icon) {
                 if (icon.label.indexOf(e.target.value) != -1 || icon.value.indexOf(e.target.value) != -1) {
                     return icon;
                 }
@@ -49,12 +51,13 @@ export default {
 
         },
         onFontClick(icon) {
-            lodash.forEach(this.iconList, function(icon) {
+            _.forEach(this.iconList, function(icon) {
                 icon.active = false;
             });
             icon.active = true;
 
-            this.$emit('onSelect', icon);
+            this.$emit('onSelect', icon.value);
+
         }
     }
 }

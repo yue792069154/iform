@@ -5,9 +5,10 @@ import draggable from "vuedraggable";
 import _ from "lodash";
 import components from "../components/index";
 import renderUtils from "../libs/render";
+import  '../styles/common/iconfont/iconfont.css';
 
 export default {
-    name: 'IFormDesign',
+    name: 'IFormItem',
     data() {
         return {
 
@@ -35,7 +36,7 @@ export default {
 
         return h("Form", {
             props: {
-                ref: "iviewForm",
+                //ref: "iviewForm",
                 // model: "iviewFormModel",
                 // rules: "iviewFormRules",
                 // labelWidth: this.comSelect.formProps.labelWidth,

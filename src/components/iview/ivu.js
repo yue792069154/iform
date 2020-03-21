@@ -5,7 +5,7 @@ class Ivu {
         this.ui = 'iview';
         this.abridge = 'ivu';
 
-        this.prefixCls = 'psp-form';
+        this.prefixCls = 'iForm';
 
         this.active = true;
 

@@ -1,16 +1,16 @@
 import Vue from 'vue';
-import iView from 'iview';
+import ViewUI from 'view-design';
 import VueRouter from 'vue-router';
 import Routers from './router';
 import Vuex from 'vuex';
 import Util from './libs/util';
 import App from './app.vue';
-import 'iview/dist/styles/iview.css';
+import 'view-design/dist/styles/iview.css';
 
 import VueI18n from 'vue-i18n';
 import Locales from './locale';
-import zhLocale from 'iview/src/locale/lang/zh-CN';
-import enLocale from 'iview/src/locale/lang/en-US';
+import zhLocale from 'view-design/src/locale/lang/zh-CN';
+import enLocale from 'view-design/src/locale/lang/en-US';
 
 import JSONView from 'vue-json-viewer';
 Vue.use(JSONView);
@@ -18,7 +18,7 @@ Vue.use(JSONView);
 Vue.use(VueRouter);
 Vue.use(Vuex);
 Vue.use(VueI18n);
-Vue.use(iView);
+Vue.use(ViewUI);
 
 // 自动设置语言
 const navLang = navigator.language;
@@ -43,13 +43,13 @@ const RouterConfig = {
 const router = new VueRouter(RouterConfig);
 
 router.beforeEach((to, from, next) => {
-    iView.LoadingBar.start();
+    ViewUI.LoadingBar.start();
     Util.title(to.meta.title);
     next();
 });
 
 router.afterEach(() => {
-    iView.LoadingBar.finish();
+    ViewUI.LoadingBar.finish();
     window.scrollTo(0, 0);
 });
 

@@ -1,18 +1,7 @@
-var fwCore = require("comjs:fw-core");
-var ObjectUtils = fwCore.util.ObjectUtils;
-const lang = require('../../../lang/index.js');
-
-const lodash = require('comjs:lodash');
-
-const iconfont = require("comjs:iconfont-json");
-require("comjs:font-awesome");
-require("comjs:iconfont");
-
-const Ivu = require('./ivu.js');
-
+import Ivu from './ivu';
 class IvuRate extends Ivu {
 
-    constructor() {
+    constructor(Vue) {
 
         super();
 
@@ -20,11 +9,11 @@ class IvuRate extends Ivu {
 
         this.type = 'IvuRate';
 
-        this.label = lang.ivuRate;
+        this.label = Vue.$t('ivuRate');
 
         this.icon = 'fa fa-pencil-square-o';
 
-        let props = {
+        this.props = {
 
             count: 5,
             "allow-half": false,
@@ -40,120 +29,42 @@ class IvuRate extends Ivu {
 
         };
 
-        this.render = (h) => {
-            return h("Rate", {
-                props: props
-            });
-        };
-
-        this.props = props;
-
         this.groupList = [{
-            groupName: lang.basicAttr,
+            groupName: Vue.$t('basicAttr'),
             groupCode: 'basicAttr',
             children: {
                 code: {
-                    type: String,
-                    props: props,
-                    onChange: function (value) {
-                        props.code = value;
-                    }
+                    type: "String"
                 },
                 label: {
-                    type: String,
-                    props: props,
-                    onChange: function (value) {
-                        self.label = value;
-                        props.label = value;
-                    }
+                    type: "String"
                 },
                 count: {
-                    type: Number,
-                    props: props,
-                    onChange: function (value) {
-                        props.count = value;
-                    }
+                    type: "Number"
                 },
                 "allow-half": {
-                    type: Boolean,
-                    props: props,
-                    onChange: function (value) {
-                        props["allow-half"] = value;
-                    }
+                    type: "Boolean"
                 },
                 disabled: {
-                    type: Boolean,
-                    props: props,
-                    onChange: function (value) {
-                        props.disabled = value;
-                    }
+                    type: "Boolean"
                 },
                 "show-text": {
-                    type: Boolean,
-                    props: props,
-                    onChange: function (value) {
-                        props["show-text"] = value;
-                    }
+                    type: "Boolean"
                 },
                 clearable: {
-                    type: Boolean,
-                    props: props,
-                    onChange: function (value) {
-                        props.clearable = value;
-                    }
+                    type: "Boolean"
                 },
                 character: {
-                    type: String,
-                    props: props,
-                    onChange: function (value) {
-                        props.character = value;
-                    }
+                    type: "String"
                 },
                 icon: {
-                    type: String,
-                    props: props,
-                    onChange: function (value) {
-                        props.icon = value;
-                    }
+                    type: "String"
                 },
                 "custom-icon": {
-                    type: Array,
-                    props: props,
-                    filterable: true,
-                    clearable: true,
-                    optionList: function () {
-                        var iconList = [];
-                        lodash.forEach(iconfont.glyphs, function (icon) {
-                            iconList.push({
-                                label: icon.name,
-                                value: "icon iconfont icon" + icon.font_class
-                            });
-                        });
-                        return iconList;
-                    }(),
-                    slot: true,
-                    slotRender: function (h, item) {
-                        return h("div", [
-                            h("span", {
-                                class: item.code,
-                                style: {
-                                    marginRight: "6px"
-                                }
-                            }),
-                            h("span", item.name)
-                        ]);
-                    },
-                    onChange: function (option) {
-                        if (ObjectUtils.hasValue(option)) {
-                            props["custom-icon"] = option.value;
-                        } else {
-                            props["custom-icon"] = null;
-                        }
-                    }
+                    type: "Icon"
                 }
             }
         }];
     }
 }
-
-module.exports = IvuRate;
+export default IvuRate;

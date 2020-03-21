@@ -7,7 +7,7 @@
         <div :class="[prefixCls + '-pannel']">
             <div :class="[prefixCls + '-pannel-bolder']">
                 <div :class="[prefixCls + '-pannel-header']">
-                    <i class="fa fa-file-text"></i> iForm
+                    <i class="fa fa-file-text"></i> iForm 
                 </div>
                 <div :class="[prefixCls + '-pannel-main']">
                     <div :class="[prefixCls + '-pannel-main-left']">
@@ -99,7 +99,7 @@
                                         </div>
                                     </div>
                                     <div :class="[prefixCls + '-card-content padding-left-10px padding-right-10px padding-bottom-10px']">
-                                        <i-form-attribute :component="componentActive" :componentAttribute="group.children"></i-form-attribute>
+                                        <i-form-item-config :formItem="componentActive" :formItemConfig="group.children"></i-form-item-config>
                                     </div>
                                 </div>
     
@@ -130,7 +130,7 @@ import draggable from "vuedraggable";
 import _ from "lodash";
 
 import components from "./components/index";
-import IFormAttribute from './views/iform-attribute.vue';
+import IFormItemConfig from './views/iform-form-item-config.vue';
 
 const prefixCls = 'iform';
 
@@ -254,7 +254,7 @@ export default {
     },
     components: {
         draggable,
-        IFormAttribute
+        IFormItemConfig
     }
 };
 </script>

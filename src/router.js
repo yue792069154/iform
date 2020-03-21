@@ -1,4 +1,4 @@
-import IFormDesign from './views/iform-design.vue';
+import IFormItem from './views/iform-form-item.vue';
 import IFormCode from './views/iform-code.vue';
 
 const routers = [{
@@ -6,7 +6,7 @@ const routers = [{
         meta: {
             title: 'iForm'
         },
-        component: IFormDesign
+        component: IFormItem
     },{
         path: '/code',
         meta: {

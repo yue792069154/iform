@@ -1,17 +1,7 @@
-var fwCore = require("comjs:fw-core");
-var ObjectUtils = fwCore.util.ObjectUtils;
-const lodash = require('comjs:lodash');
-
-const lang = require('../../../lang/index.js');
-const regexList = require('../../../utils/regex.js');
-
-require('../../../components/index.js');
-
-const Ivu = require('./ivu.js');
-
+import Ivu from './ivu';
 class IvuTextIcon extends Ivu {
 
-    constructor() {
+    constructor(Vue) {
 
         super();
 
@@ -19,21 +9,21 @@ class IvuTextIcon extends Ivu {
 
         this.type = 'IvuTextIcon';
 
-        this.label = lang.ivuTextIcon;
+        this.label = Vue.$t('ivuTextIcon');
 
         this.icon = 'fa fa-pencil-square-o';
 
-        let props = {
+        this.props = {
 
-            width: "100",
+            width: 100,
             type: "text",
             size: "large",
-            placeholder: lang.pleaseInput,
+            placeholder: Vue.$t('pleaseInput'),
             clearable: false,
             disabled: false,
             readonly: false,
             maxlength: 36,
-            prefix: "icon iconfont iconedit",
+            prefix: "ios-contact",
             suffix: null,
 
             value: null,
@@ -41,228 +31,85 @@ class IvuTextIcon extends Ivu {
             label: self.label,
             code: self.getComponentCode(),
 
-            regex: "",
-            regexType: "regexBuilit",
-            regexBuilit: null,
-            regexCustom: null,
-            regexMessage: "",
+            rule: '',
+            ruleType: 'regexBuilit',
+            ruleMessage: '',
 
             required: false
 
         };
 
-        this.render = (h) => {
-            return h("Input", {
-                props: props,
-                style: {
-                    width: props.width + "%"
-                }
-            });
-        };
-
-        this.props = props;
-
         this.groupList = [{
-            groupName: lang.basicAttr,
+            groupName: Vue.$t('basicAttr'),
             groupCode: 'basicAttr',
             children: {
                 code: {
-                    type: String,
-                    props: props,
-                    onChange: function (value) {
-                        props.code = value;
-                    }
+                    type: 'String'
                 },
                 label: {
-                    type: String,
-                    props: props,
-                    onChange: function (value) {
-                        self.label = value;
-                        props.label = value;
-                    }
+                    type: 'String'
                 },
                 width: {
-                    type: Number,
-                    props: props,
-                    onChange: function (value) {
-                        props.width = value;
-                    }
+                    type: 'Number'
                 },
                 size: {
-                    type: Array,
-                    props: props,
+                    type: 'Array',
+                    render: 'Select',
                     optionList: [{
-                        label: lang.large,
-                        value: "large"
+                        label: Vue.$t('large'),
+                        value: 'large'
                     }, {
-                        label: lang.small,
-                        value: "small"
+                        label: Vue.$t('small'),
+                        value: 'small'
                     }, {
-                        label: lang.default,
-                        value: "default"
-                    }],
-                    onChange: function (option) {
-                        props.size = option.value;
-                    }
+                        label: Vue.$t('default'),
+                        value: 'default'
+                    }]
                 },
                 placeholder: {
-                    type: String,
-                    props: props,
-                    clearable: true,
-                    onChange: function (value) {
-                        props.placeholder = value;
-                    }
+                    type: 'String',
+                    clearable: true
                 },
-                defaultValue: {
-                    type: String,
-                    props: props,
-                    clearable: true,
-                    onChange: function (value) {
-                        props.value = value;
-                    }
+                value: {
+                    type: 'String',
+                    clearable: true
                 },
                 clearable: {
-                    type: Boolean,
-                    props: props,
-                    onChange: function (value) {
-                        props.clearable = value;
-                    }
+                    type: 'Boolean'
                 },
                 disabled: {
-                    type: Boolean,
-                    props: props,
-                    onChange: function (value) {
-                        props.disabled = value;
-                    }
+                    type: 'Boolean'
                 },
                 readonly: {
-                    type: Boolean,
-                    props: props,
-                    onChange: function (value) {
-                        props.readonly = value;
-                    }
+                    type: 'Boolean'
                 }
             }
         }, {
-            groupName: lang.validateAttr,
+            groupName: Vue.$t('validateAttr'),
             groupCode: 'validateAttr',
             children: {
                 required: {
-                    type: Boolean,
-                    props: props,
-                    onChange: function (value) {
-                        props.required = value;
-                    }
+                    type: 'Boolean'
                 },
                 maxlength: {
-                    type: Number,
-                    props: props,
-                    onChange: function (value) {
-                        props.maxlength = value;
-                    }
+                    type: 'Number'
                 },
-                regexType: {
-                    type: Array,
-                    props: props,
-                    render: "RadioGroup",
-                    optionList: [{
-                        label: lang.regexBuilit,
-                        value: "regexBuilit"
-                    }, {
-                        label: lang.regexCustom,
-                        value: "regexCustom"
-                    }],
-                    onChange: function (option) {
-
-                        props.regexType = option.value;
-                        props.regex = null;
-                        props.regexMessage = null;
-                        props.regexBuilit = null;
-                        props.regexCustom = null;
-
-                        switch (option.value) {
-
-                            case "regexBuilit":
-                                self.groupList[1].children.regexBuilit.display = "inherit";
-                                self.groupList[1].children.regexCustom.display = "none";
-                                break;
-
-                            case "regexCustom":
-                                self.groupList[1].children.regexBuilit.display = "none";
-                                self.groupList[1].children.regexCustom.display = "inherit";
-                                break;
-
-                            default:
-
-                                break;
-                        }
-                    }
-                },
-                regexBuilit: {
-                    type: Array,
-                    props: props,
-                    label: false,
-                    clearable: true,
-                    optionList: regexList,
-                    onChange: function (option) {
-                        if (ObjectUtils.hasValue(option)) {
-                            props.regexBuilit = option.value;
-                            props.regex = option.value;
-                            props.regexMessage = option.regexMessage;
-                        }
-                    }
-                },
-                regexCustom: {
-                    type: String,
-                    props: props,
-                    label: false,
-                    display: "none",
-                    clearable: true,
-                    onChange: function (value) {
-                        props.regexCustom = value;
-                        props.regex = value;
-                    }
-                },
-                regexMessage: {
-                    type: String,
-                    props: props,
-                    clearable: true,
-                    onChange: function (value) {
-                        props.regexMessage = value;
-                    }
+                rule: {
+                    type: 'Rule',
                 }
             }
         }, {
-            groupName: lang.highAttr,
+            groupName: Vue.$t('highAttr'),
             groupCode: 'highAttr',
             children: {
                 prefix: {
-                    type: Function,
-                    props: props,
-                    render: "IconSelect",
-                    onChange: function (icon) {
-                        if (ObjectUtils.hasValue(icon)) {
-                            props.prefix = icon.value;
-                        } else {
-                            props.prefix = null;
-                        }
-                    }
+                    type: "Icon"
                 },
                 suffix: {
-                    type: Function,
-                    props: props,
-                    render: "IconSelect",
-                    onChange: function (icon) {
-                        if (ObjectUtils.hasValue(icon)) {
-                            props.suffix = icon.value;
-                        } else {
-                            props.suffix = null;
-                        }
-                    }
+                    type: "Icon"
                 }
             }
         }];
     }
 }
-
-module.exports = IvuTextIcon;
+export default IvuTextIcon;
