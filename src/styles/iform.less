@@ -36,11 +36,24 @@ body {
         &-header {
             height: 60px;
             color: white;
-            font-size: 2rem;
+            display: flex;
+            align-items: center;
             line-height: 60px;
             background: #202731;
             padding-left: 16px;
             width: 100%;
+
+            &-dropdown {
+                font-size: 1.3rem;
+                margin-top: 3px;
+                margin-left: 10px;
+            }
+
+            &-left {
+                font-size: 2rem;
+            }
+
+            &-right {}
         }
 
         &-main {
@@ -95,7 +108,7 @@ body {
 
                             &:hover {
                                 background: #F2F2F2;
-                               
+
                             }
                         }
 
@@ -149,6 +162,16 @@ body {
                     height: 100%;
                     padding: 10px;
 
+                    .iform-design-mobile {
+
+                        background: url(../assets/images/mobile-template.png) no-repeat top;
+                        background-size: 100% 100%;
+                        width: 490px;
+                        height: 670px;
+                        margin: 0 auto;
+                        position: relative;
+                    }
+
 
                     .iform-design {
                         width: 100%;
@@ -158,7 +181,8 @@ body {
 
 
 
-                        .iform-item {
+                        .iform-item,
+                        .iform-item-layout {
                             width: 100%;
                             padding: 10px 10px 10px;
                             position: relative;
@@ -170,23 +194,8 @@ body {
                             border: 1px dashed transparent;
                             box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .1);
 
-                            &::after {
-                                position: absolute;
-                                left: 0;
-                                right: 0;
-                                top: 0;
-                                bottom: 0;
-                                display: block;
-                                z-index: 8;
-                                content: "";
-                                height: 100% !important;
-                                visibility:visible !important;
-                            }
 
-                            &:hover {
-                                background: #e7f2fd;
-                                border: 1px dashed #409EFF;
-                            }
+
 
                             .ivu-form-item-content {
                                 position: unset;
@@ -216,13 +225,38 @@ body {
 
                         }
 
+                        .iform-item::after {
+                            position: absolute;
+                            left: 0;
+                            right: 0;
+                            top: 0;
+                            bottom: 0;
+                            display: block;
+                            z-index: 8;
+                            content: "";
+                            height: 100% !important;
+                            visibility: visible !important;
+                        }
+
+                        .iform-item:hover {
+                            background: #e7f2fd;
+                            border: 1px dashed #409EFF;
+                        }
+
+                        .iform-item-layout:hover {
+                            background: #FFFAF0;
+                            border: 1px dashed #FFC125;
+                        }
+
 
                         .iform-item-move {
                             background: #e7f2fd;
                             margin-bottom: 8px;
                             border-radius: 4px;
                             content: '';
+                            min-height: 40px;
                             font-size: 0px;
+                            width: 100%;
                         }
 
                         .iform-item-active {
@@ -230,20 +264,36 @@ body {
                             border: 1px dashed #409EFF;
                         }
 
+                        .iform-item-layout-active {
+                            background: #FFFAF0;
+                            border: 1px dashed #FFC125;
+                        }
+
                     }
 
                     .iform-design-form {
                         width: 100%;
                         height: 100%;
-
-                       
-
                     }
+
+                    .iform-design-form-mobile {
+                        position: absolute;
+                        overflow-x: hidden;
+                        overflow-y: auto;
+                        width: 292px;
+                        height: 480px;
+                        left: 50%;
+                        margin-left: -146px;
+                        top: 73px;
+                        max-height: 480px;
+                        background: #f6f6f6;
+                    }
+
 
                     .iform-layout-form {
                         border: 1px dashed rgba(170, 170, 170, 0.7);
                         min-height: 50px;
-                        background-color: white;
+                        background-color: #F2F5F7;
                         padding: 10px;
                     }
 
@@ -413,6 +463,10 @@ body {
 
     ::-webkit-scrollbar {
         display: none;
+    }
+
+    .ivu-tabs {
+        height: 100%;
     }
 }
 

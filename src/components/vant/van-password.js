@@ -1,5 +1,5 @@
-import Ivu from './ivu';
-class IvuCard extends Ivu {
+import Van from './van';
+class VanPassword extends Van {
 
     constructor(Vue) {
 
@@ -7,26 +7,26 @@ class IvuCard extends Ivu {
 
         var self = this;
 
-        this.type = 'IvuCard';
-
-        this.label = Vue.$t('ivuCard');
+        this.type = 'VanPassword';
 
         this.layout = true;
+
+        this.label = Vue.$t('vanPassword');
 
         this.icon = 'fa fa-pencil-square-o';
 
         this.props = {
 
-            title: Vue.$t('ivuCard'),
-            bordered: true,
-            "dis-hover": false,
-            shadow: false,
-            padding: 16,
+            info: "",
+            "error-info": "",
+            length: 6,
+            gutter: 0,
+            mask: false,
+            focused : false,
 
             label: self.label,
             code: self.getComponentCode(),
 
-            componentList: []
         };
 
         this.groupList = [{
@@ -36,25 +36,27 @@ class IvuCard extends Ivu {
                 code: {
                     type: "String"
                 },
-                title: {
+                info: {
                     type: "String"
                 },
-                bordered: {
-                    type: "Boolean"
+                "error-info": {
+                    type: "String"
                 },
-                "dis-hover": {
-                    type: "Boolean"
-                },
-                shadow: {
-                    type: "Boolean"
-                },
-                padding: {
+                length: {
                     type: "Number"
+                },
+                gutter: {
+                    type: "Number"
+                },
+                mask: {
+                    type: "Boolean"
+                },
+                focused : {
+                    type: "Boolean"
                 }
-
             }
         }];
     }
 }
 
-export default IvuCard;
+export default VanPassword;

@@ -12,6 +12,9 @@ import Locales from './locale';
 import zhLocale from 'view-design/src/locale/lang/zh-CN';
 import enLocale from 'view-design/src/locale/lang/en-US';
 
+import Vant from 'vant';
+import 'vant/lib/index.css';
+
 import JSONView from 'vue-json-viewer';
 Vue.use(JSONView);
 
@@ -19,6 +22,7 @@ Vue.use(VueRouter);
 Vue.use(Vuex);
 Vue.use(VueI18n);
 Vue.use(ViewUI);
+Vue.use(Vant);
 
 // 自动设置语言
 const navLang = navigator.language;
@@ -56,6 +60,7 @@ router.afterEach(() => {
 
 const store = new Vuex.Store({
     state: {
+        ui: "iview",
         componentSelect: {
             formProps: {
 
@@ -70,6 +75,9 @@ const store = new Vuex.Store({
 
     },
     mutations: {
+        setUi(state, data) {
+            state.ui = data.ui;
+        },
         setComponentActive(state, data) {
             state.componentActive = data.componentActive;
         },

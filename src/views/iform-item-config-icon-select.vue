@@ -14,8 +14,8 @@
 <script>
 
 import _ from "lodash";
-import iconfont from '../../styles/common/iconfont/iconfont.json';
-import  '../../styles/common/iconfont/iconfont.css';
+import iconfont from '../styles/common/iconfont/iconfont.json';
+import  '../styles/common/iconfont/iconfont.css';
 
 export default {
     name: "IFormItemConfigIconSelect",

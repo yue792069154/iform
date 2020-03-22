@@ -10,7 +10,7 @@ class IvuSelect extends Ivu {
 
         this.type = 'IvuSelect';
 
-        this.label =  Vue.$t('ivuSelect');
+        this.label = Vue.$t('ivuSelect');
 
         this.icon = 'fa fa-pencil-square-o';
 
@@ -19,7 +19,7 @@ class IvuSelect extends Ivu {
             width: 100,
             type: "text",
             size: "large",
-            placeholder:  Vue.$t('pleaseSelect'),
+            placeholder: Vue.$t('pleaseSelect'),
             clearable: false,
             disabled: false,
             readonly: false,
@@ -33,9 +33,19 @@ class IvuSelect extends Ivu {
             required: false,
 
             dataType: "dataStatic",
-            dataValue:"",
-            dataStaticList: []
-
+            optionList: [{
+                label: "选项1",
+                value: "1",
+                componentList: []
+            }, {
+                label: "选项2",
+                value: "2",
+                componentList: []
+            }, {
+                label: "选项3",
+                value: "3",
+                componentList: []
+            }]
         };
 
         this.groupList = [{
@@ -70,7 +80,8 @@ class IvuSelect extends Ivu {
                     clearable: true
                 },
                 dataType: {
-                    type: "Data"
+                    type: "Data",
+                    field:"optionList"
                 },
                 filterable: {
                     type: "Boolean"

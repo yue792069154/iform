@@ -14,7 +14,7 @@
 
 
 <script>
-import IFormItemConfigIconSelect from "./iform-form-item-config-icon-select.vue";
+import IFormItemConfigIconSelect from "./iform-item-config-icon-select.vue";
 
 export default {
     name: 'IFormItemConfigIcon',

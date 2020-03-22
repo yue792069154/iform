@@ -1,12 +1,8 @@
-const lang = require('../../../lang/index.js');
-const lodash = require('comjs:lodash');
-var render = require("../../../utils/render.js");
-const Ivu = require('./ivu.js');
-
+import Ivu from './ivu';
 
 class IvuBlock extends Ivu {
 
-    constructor(coms) {
+    constructor(Vue) {
 
         super();
 
@@ -14,179 +10,70 @@ class IvuBlock extends Ivu {
 
         this.type = 'IvuBlock';
 
-        this.label = lang.ivuBlock;
+        this.label = Vue.$t('ivuBlock');
 
         this.layout = true;
 
         this.icon = 'fa fa-pencil-square-o';
 
-        let props = {
+        this.props = {
 
-            comList: [],
-            padding: "10",
+            componentList: [],
+            padding: "0",
             borderWidth: "1",
-            borderStyle: "solid",
-            borderColor: "gray",
+            borderStyle: "",
+            borderColor: "",
             backgroundColor: "",
             borderRadius: "0",
+            content: "",
             code: self.getComponentCode(),
 
         };
 
-        this.render = (h, preview) => {
-            return h("div", {
-                props: props,
-                style: {
-                    padding: props.padding + "px",
-                    borderWidth: props.borderWidth + "px",
-                    borderStyle: props.borderStyle,
-                    borderColor: props.borderColor,
-                    backgroundColor: props.backgroundColor,
-                    borderRadius: props.borderRadius + "px"
-                }
-            }, [h("draggable", {
-                props: {
-                    options: {
-                        group: {
-                            name: 'psp-form'
-                        },
-                        animation: 150
-                    }
-                },
-                on: {
-                    add: function (e) {
-
-                        var groupType = e.item.attributes.groupType.value;
-                        var type = e.item.attributes.type.value;
-
-                        lodash.forEach(props.comList, function (item) {
-                            item.active = false;
-                        });
-
-                        var com = new coms[self.ui][groupType][type](coms);
-
-                        com.onGetComAttributeGroupList = function (groupList) {
-                            self.onGetComAttributeGroupList(groupList);
-                        };
-
-                        com.onGetComAttributeGroupList(com.groupList);
-
-                        props.comList.splice(e.newIndex, 0, com);
-
-                    },
-                    update: function (e) {
-
-                        var com = props.comList[e.oldIndex];
-                        props.comList.splice(e.oldIndex, 1);
-                        props.comList.splice(e.newIndex, 0, com);
-
-                    }
-                },
-                class: preview ? "" : "psp-form-layout-form"
-            }, [props.comList.map(function (com) {
-                if (com.layout) {
-                    return render.renderLayoutItem(h, com, props, preview);
-                } else {
-                    return render.renderFormItem(h, com, props, preview);
-                }
-            })])]);
-        };
-
-        this.props = props;
-
         this.groupList = [{
-            groupName: lang.basicAttr,
+            groupName: Vue.$t('basicAttr'),
             groupCode: 'basicAttr',
             children: {
                 code: {
-                    type: String,
-                    props: props,
-                    onChange: function (value) {
-                        props.code = value;
-                    }
+                    type: "String"
                 },
                 padding: {
-                    type: Number,
-                    props: props,
-                    onChange: function (value) {
-                        props.padding = value;
-                    }
+                    type: "Number"
                 },
                 borderWidth: {
-                    type: Number,
-                    props: props,
-                    onChange: function (value) {
-                        props.borderWidth = value;
-                    }
+                    type: "Number"
                 },
                 borderStyle: {
-                    type: Array,
-                    props: props,
+                    type: "Array",
                     optionList: [{
-                        label: lang.dotted,
+                        label: Vue.$t('dotted'),
                         value: "dotted"
                     }, {
-                        label: lang.dashed,
+                        label: Vue.$t('dashed'),
                         value: "dashed"
                     }, {
-                        label: lang.solid,
+                        label: Vue.$t('solid'),
                         value: "solid"
-                    }],
-                    onChange: function (option) {
-                        props.borderStyle = option.value;
-                    }
+                    }]
                 },
                 borderColor: {
-                    type: Function,
-                    props: props,
-                    render: "ColorPicker",
-                    onChange: function (value) {
-                        props.borderColor = value;
-                    }
+                    type: "ColorPicker"
                 },
                 backgroundColor: {
-                    type: Function,
-                    props: props,
-                    render: "ColorPicker",
-                    onChange: function (value) {
-                        props.backgroundColor = value;
-                    }
+                    type: "ColorPicker"
                 },
                 borderRadius: {
-                    type: Number,
-                    props: props,
-                    onChange: function (value) {
-                        props.borderRadius = value;
-                    }
+                    type: "Number"
                 },
-                size: {
-                    type: Array,
-                    props: props,
-                    optionList: [{
-                        label: lang.large,
-                        value: "large"
-                    }, {
-                        label: lang.small,
-                        value: "small"
-                    }, {
-                        label: lang.default,
-                        value: "default"
-                    }],
-                    onChange: function (option) {
-                        props.size = option.value;
-                    }
-                },
-                placeholder: {
-                    type: String,
-                    props: props,
+                content: {
+                    type: "Textarea",
                     clearable: true,
-                    onChange: function (value) {
-                        props.placeholder = value;
-                    }
-                },
+                    textarea: true,
+                    maxlength: 5000,
+                    rows: 8
+                }
             }
         }];
     }
 }
-
-module.exports = IvuBlock;
+export default IvuBlock;

@@ -15,7 +15,7 @@ class IvuTextSearch extends Ivu {
 
         let props = {
 
-            width: "100",
+            width: 100,
             type: "text",
             size: "large",
             placeholder:  Vue.$t('pleaseInput'),

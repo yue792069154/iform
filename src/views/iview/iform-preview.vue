@@ -3,9 +3,8 @@ const prefixCls = 'iform';
 
 import draggable from "vuedraggable";
 import _ from "lodash";
-import components from "../components/index";
-import renderUtils from "../libs/render";
-import  '../styles/common/iconfont/iconfont.css';
+import components from "../../components/index";
+import  '../../styles/common/iconfont/iconfont.css';
 
 export default {
     name: 'IFormItem',
@@ -109,11 +108,7 @@ export default {
                     }
                 }
             }, [vm.componentSelect.componentList.map(function(component) {
-                if (component.layout) {
-                    return renderUtils.renderLayoutItem(h, component, vm.componentSelect);
-                } else {
-                    return renderUtils.renderFormItem(h, component, vm.componentSelect);
-                }
+                return renderUtils.renderFormItem(h, component);
             })])
         ]);
 

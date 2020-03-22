@@ -15,7 +15,7 @@ class IvuDatePicker extends Ivu {
 
         this.props = {
 
-            width: "100",
+            width: 100,
             type: "date",
             size: "large",
             placeholder: Vue.$t('pleaseSelect'),

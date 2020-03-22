@@ -28,8 +28,11 @@
 
         </Select>
 
-         <Input type="textarea" v-if="formItemValue.type=='Textarea'" show-word-limit v-model="formItem.props[formItemKey]"
-          :clearable="formItemValue.clearable" :maxlength="formItemValue.maxlength" :rows="formItemValue.rows">
+        <ColorPicker v-if="formItemValue.type=='ColorPicker'" v-model="formItem.props[formItemKey]" />
+
+        <Input type="textarea" v-if="formItemValue.type=='Textarea'" show-word-limit
+          v-model="formItem.props[formItemKey]" :clearable="formItemValue.clearable"
+          :maxlength="formItemValue.maxlength" :rows="formItemValue.rows">
 
         </Input>
 
@@ -43,9 +46,14 @@
 
         </i-form-item-config-icon>
 
-        <i-form-item-config-data v-if="formItemValue.type=='Data'" @onGetConfigData="onGetConfigData">
+        <i-form-item-config-data v-if="formItemValue.type=='Data'" :props="formItem.props" :field="formItemValue.field">
 
         </i-form-item-config-data>
+
+        <i-form-item-config-data-static v-if="formItemValue.type=='StaticData'"
+          :data="formItem.props[formItemValue.field]" :textType="formItemValue.textType">
+
+        </i-form-item-config-data-static>
 
       </FormItem>
 
@@ -58,9 +66,10 @@
 <script>
   import draggable from "vuedraggable";
   import _ from "lodash";
-  import IFormItemConfigRule from "./components/iform-form-item-config-rule.vue";
-  import IFormItemConfigIcon from "./components/iform-form-item-config-icon.vue";
-  import IFormItemConfigData from "./components/iform-form-item-config-data.vue";
+  import IFormItemConfigRule from "./iform-item-config-rule.vue";
+  import IFormItemConfigIcon from "./iform-item-config-icon.vue";
+  import IFormItemConfigData from "./iform-item-config-data.vue";
+  import IFormItemConfigDataStatic from "./iform-item-config-data-static.vue";
 
   export default {
     name: "IFormItemConfig",
@@ -89,18 +98,14 @@
         this.formItem.props.rule = rule.ruleValue;
         this.formItem.props.ruleType = rule.ruleType;
         this.formItem.props.ruleMessage = rule.ruleMessage;
-      },
-      onGetConfigData(data) {
-        this.formItem.props.dataType = data.dataType;
-        this.formItem.props.dataValue = data.dataValue;
-        this.formItem.props.dataStaticList = data.dataStaticList;
       }
     },
     components: {
       draggable,
       IFormItemConfigRule,
       IFormItemConfigIcon,
-      IFormItemConfigData
+      IFormItemConfigData,
+      IFormItemConfigDataStatic
     }
   };
 </script>

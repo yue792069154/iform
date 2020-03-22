@@ -1,14 +1,8 @@
-var fwCore = require("comjs:fw-core");
-var ObjectUtils = fwCore.util.ObjectUtils;
-const lodash = require('comjs:lodash');
-const lang = require('../../../lang/index.js');
-var render = require("../../../utils/render.js");
-const object = require('../../../utils/object.js');
-const Ivu = require('./ivu.js');
+import Ivu from './ivu';
 
 class IvuTabs extends Ivu {
 
-    constructor(coms) {
+    constructor(Vue) {
 
         super();
 
@@ -16,13 +10,13 @@ class IvuTabs extends Ivu {
 
         this.type = 'IvuTabs';
 
-        this.label = lang.ivuTabs;
+        this.label = Vue.$t('ivuTabs');
 
         this.layout = true;
 
         this.icon = 'fa fa-pencil-square-o';
 
-        let props = {
+        this.props = {
 
             type: "card",
             size: "large",
@@ -30,171 +24,70 @@ class IvuTabs extends Ivu {
             animated: true,
             "capture-focus": false,
 
-            tabList: [{
+            tabs: [{
                 label: "标签1",
-                value: "1",
-                comList: []
+                value: 1,
+                componentList: []
             }, {
                 label: "标签2",
-                value: "2",
-                comList: []
+                value: 2,
+                componentList: []
+            }, {
+                label: "标签3",
+                value: 3,
+                componentList: []
             }],
 
             code: self.getComponentCode(),
 
         };
 
-        this.render = (h, preview) => {
-
-            let tabList = [];
-
-            lodash.mapKeys(props.tabList, (tab) => {
-                tabList.push(h("TabPane", {
-                    props: {
-                        label: tab.label,
-                        name: tab.value,
-                    }
-                }, [h("draggable", {
-                    props: {
-                        options: {
-                            group: {
-                                name: 'psp-form'
-                            },
-                            ghostClass: "psp-form-item-move",
-                            animation: 150
-                        }
-                    },
-                    on: {
-                        add: function (e) {
-
-
-                            var groupType = e.item.attributes.groupType.value;
-                            var type = e.item.attributes.type.value;
-
-                            lodash.forEach(tab.comList, function (item) {
-                                item.active = false;
-                            });
-
-                            var com = new coms[self.ui][groupType][type](coms);
-
-                            com.onGetComAttributeGroupList = function (groupList) {
-                                self.onGetComAttributeGroupList(groupList);
-                            };
-
-                            com.onGetComAttributeGroupList(com.groupList);
-
-                            tab.comList.splice(e.newIndex, 0, com);
-
-                        }
-                    },
-                    class: preview ? "" : "psp-form-layout-form"
-                }, [tab.comList.map(function (com) {
-
-                    if (com.layout) {
-                        return render.renderLayoutItem(h, com, tab, preview);
-                    } else {
-                        return render.renderFormItem(h, com, tab, preview);
-                    }
-                })])]));
-            });
-
-            return h("Tabs", {
-                props: props
-            }, tabList);
-        };
-
-        this.props = props;
-
         this.groupList = [{
-            groupName: lang.basicAttr,
+            groupName: Vue.$t('basicAttr'),
             groupCode: 'basicAttr',
             children: {
                 code: {
-                    type: String,
-                    props: props,
-                    onChange: function (value) {
-                        props.code = value;
-                    }
+                    type: "String"
                 },
                 size: {
-                    type: Array,
-                    props: props,
+                    type: 'Array',
+                    render: 'Select',
                     optionList: [{
-                        label: lang.large,
-                        value: "large"
+                        label: Vue.$t('large'),
+                        value: 'large'
                     }, {
-                        label: lang.small,
-                        value: "small"
+                        label: Vue.$t('small'),
+                        value: 'small'
                     }, {
-                        label: lang.default,
-                        value: "default"
-                    }],
-                    onChange: function (option) {
-                        props.size = option.value;
-                    }
+                        label: Vue.$t('default'),
+                        value: 'default'
+                    }]
                 },
-
                 type: {
-                    type: Array,
-                    props: props,
+                    type: "Array",
                     optionList: [{
-                        label: lang.line,
+                        label: Vue.$t('line'),
                         value: "line"
                     }, {
-                        label: lang.card,
+                        label: Vue.$t('card'),
                         value: "card"
-                    }],
-                    onChange: function (option) {
-
-                        props.type = option.value;
-
-                        if (props.type == "card") {
-                            self.groupList[0].children.closable.display = "inherit";
-                        } else {
-                            self.groupList[0].children.closable.display = "none";
-                            props.closable = false;
-                        }
-
-                    }
+                    }]
                 },
                 tabs: {
-                    type: Array,
-                    props: props,
-                    render: "custom",
-                    optionList: props.tabList,
-                    renderAction: lang.addTab,
-                    onAdd: function () {
-                        props.tabList.push({
-                            label: lang.newTab,
-                            value: object.getRandomCode(),
-                            comList: []
-                        });
-                    }
+                    type: "StaticData",
+                    field: "tabs"
                 },
                 closable: {
-                    type: Boolean,
-                    props: props,
-                    onChange: function (value) {
-                        props.closable = value;
-                    }
+                    type: "Boolean"
                 },
                 animated: {
-                    type: Boolean,
-                    props: props,
-                    onChange: function (value) {
-                        props.animated = value;
-                    }
+                    type: "Boolean"
                 },
                 "capture-focus": {
-                    type: Boolean,
-                    props: props,
-                    onChange: function (value) {
-                        props["capture-focus"] = value;
-                    }
+                    type: "Boolean"
                 }
             }
         }];
     }
 }
-
-module.exports = IvuTabs;
+export default IvuTabs;
